@@ -2,4 +2,6 @@
 	import '../app.pcss';
 </script>
 
-<slot></slot>
+<main class="grid place-items-center gap-8 py-4">
+	<slot></slot>
+</main>
