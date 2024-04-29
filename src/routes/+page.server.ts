@@ -1,9 +1,9 @@
 import type { PageServerLoad } from './$types';
 
-import { asd } from '$lib/db';
+import { getAllPokemon } from '$lib/db';
 
 export const load: PageServerLoad = async () => {
-	const pokemons = await asd();
+	const pokemons = await getAllPokemon();
 	if (pokemons) {
 		return { pokemons };
 	}

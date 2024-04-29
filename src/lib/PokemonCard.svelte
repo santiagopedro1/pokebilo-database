@@ -8,7 +8,7 @@
 
 <a
 	class="gradient w-64 rounded-md bg-black bg-opacity-10 p-1"
-	href="/#"
+	href={'/' + pokemonName.toLowerCase()}
 >
 	<div class="grid place-items-center rounded-md bg-white">
 		<img

@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import PokemonCard from '$lib/PokemonCard.svelte';
-
-	console.log($page.data.pokemons);
 </script>
 
 <h1 class="text-4xl">Os pokemon mais foda</h1>
