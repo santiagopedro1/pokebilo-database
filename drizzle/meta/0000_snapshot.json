@@ -1,0 +1,108 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "id": "520f7984-e114-4607-be62-a17da4d93f0d",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "pokemon": {
+      "name": "pokemon",
+      "columns": {
+        "pokedex_number": {
+          "name": "pokedex_number",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "type1": {
+          "name": "type1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "type2": {
+          "name": "type2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "pokemon_type1_pokemonTypes_id_fk": {
+          "name": "pokemon_type1_pokemonTypes_id_fk",
+          "tableFrom": "pokemon",
+          "tableTo": "pokemonTypes",
+          "columnsFrom": [
+            "type1"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "pokemon_type2_pokemonTypes_id_fk": {
+          "name": "pokemon_type2_pokemonTypes_id_fk",
+          "tableFrom": "pokemon",
+          "tableTo": "pokemonTypes",
+          "columnsFrom": [
+            "type2"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "pokemonTypes": {
+      "name": "pokemonTypes",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "damage_relations": {
+          "name": "damage_relations",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

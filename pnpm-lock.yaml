@@ -11,9 +11,18 @@ importers:
       better-sqlite3:
         specifier: ^9.6.0
         version: 9.6.0
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       drizzle-orm:
         specifier: ^0.30.9
         version: 0.30.9(@types/better-sqlite3@7.6.10)(better-sqlite3@9.6.0)
+      tailwind-merge:
+        specifier: ^2.3.0
+        version: 2.3.0
+      tailwind-variants:
+        specifier: ^0.2.1
+        version: 0.2.1(tailwindcss@3.4.3)
     devDependencies:
       '@sveltejs/adapter-auto':
         specifier: ^3.0.0
@@ -98,6 +107,10 @@ packages:
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
+
+  '@babel/runtime@7.24.5':
+    resolution: {integrity: sha512-Nms86NXrsaeU9vbBJKni6gXiEXZ4CVpYVzEjDH9Sb8vmZ3UljyA1GSOJl/6LGPO8EHLuSF9H+IxNXHPX8QHJ4g==}
+    engines: {node: '>=6.9.0'}
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
@@ -922,6 +935,10 @@ packages:
   cli-color@2.0.4:
     resolution: {integrity: sha512-zlnpg0jNcibNrO7GG9IeHH7maWFeCz+Ja1wx/7tZNU5ASSSSZ+/qZciM0/LHCYxSdqv5h2sdbQ/PXYdOuetXvA==}
     engines: {node: '>=0.10'}
+
+  clsx@2.1.1:
+    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
+    engines: {node: '>=6'}
 
   code-red@1.0.4:
     resolution: {integrity: sha512-7qJWqItLA8/VPVlKJlFXU+NBlo/qyfs39aJcuMT/2ere32ZqvF5OSxgdM5xOfJJ7O429gg2HM47y8v9P+9wrNw==}
@@ -1855,6 +1872,9 @@ packages:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
 
+  regenerator-runtime@0.14.1:
+    resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
+
   resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
     engines: {node: '>=4'}
@@ -2058,6 +2078,15 @@ packages:
     resolution: {integrity: sha512-j9KJSccHgLeRERPlhMKrCXpk2TqL2m5Z+k+OBTQhZOhIdCCd3WfqV+ylPWeipEwq17P/ekiSFWwrVQv93i3bsg==}
     engines: {node: '>=16'}
 
+  tailwind-merge@2.3.0:
+    resolution: {integrity: sha512-vkYrLpIP+lgR0tQCG6AP7zZXCTLc1Lnv/CCRT3BqJ9CZ3ui2++GPaGb1x/ILsINIMSYqqvrpqjUFsMNLlW99EA==}
+
+  tailwind-variants@0.2.1:
+    resolution: {integrity: sha512-2xmhAf4UIc3PijOUcJPA1LP4AbxhpcHuHM2C26xM0k81r0maAO6uoUSHl3APmvHZcY5cZCY/bYuJdfFa4eGoaw==}
+    engines: {node: '>=16.x', pnpm: '>=7.x'}
+    peerDependencies:
+      tailwindcss: '*'
+
   tailwindcss@3.4.3:
     resolution: {integrity: sha512-U7sxQk/n397Bmx4JHbJx/iSOOv5G+II3f1kpLpY2QeUv5DcPdcTsYLlusZfq1NthHS1c1cZoyFmmkex1rzke0A==}
     engines: {node: '>=14.0.0'}
@@ -2224,6 +2253,10 @@ snapshots:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
+
+  '@babel/runtime@7.24.5':
+    dependencies:
+      regenerator-runtime: 0.14.1
 
   '@esbuild-kit/core-utils@3.3.2':
     dependencies:
@@ -2869,6 +2902,8 @@ snapshots:
       es6-iterator: 2.0.3
       memoizee: 0.4.15
       timers-ext: 0.1.7
+
+  clsx@2.1.1: {}
 
   code-red@1.0.4:
     dependencies:
@@ -3743,6 +3778,8 @@ snapshots:
     dependencies:
       picomatch: 2.3.1
 
+  regenerator-runtime@0.14.1: {}
+
   resolve-from@4.0.0: {}
 
   resolve-pkg-maps@1.0.0: {}
@@ -3967,6 +4004,15 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.10
       periscopic: 3.1.0
+
+  tailwind-merge@2.3.0:
+    dependencies:
+      '@babel/runtime': 7.24.5
+
+  tailwind-variants@0.2.1(tailwindcss@3.4.3):
+    dependencies:
+      tailwind-merge: 2.3.0
+      tailwindcss: 3.4.3
 
   tailwindcss@3.4.3:
     dependencies:
