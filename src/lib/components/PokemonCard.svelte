@@ -19,34 +19,14 @@
 				alt={pokemonName}
 			/>
 		</Card.Content>
-		<Card.Header>
-			<Card.Title class="text-xl capitalize">{pokemonName}</Card.Title>
-			<Card.Description>#{paddedPokemonNumber}</Card.Description>
-		</Card.Header>
 		<Card.Footer class="{pokemonType.length === 1 ? 'grid-cols-1' : 'grid-cols-2'} grid place-items-center">
 			{#each pokemonType as type}
 				<TypeBadge {type} />
 			{/each}
 		</Card.Footer>
-	</Card.Root>
-</a>
-
-<a href={pokemonName}>
-	<Card.Root>
-		<Card.Header>
+		<Card.Header class="-mt-8">
 			<Card.Title class="text-xl capitalize">{pokemonName}</Card.Title>
 			<Card.Description>#{paddedPokemonNumber}</Card.Description>
 		</Card.Header>
-		<Card.Content>
-			<img
-				src={`/pokemons/${paddedPokemonNumber}.webp`}
-				alt={pokemonName}
-			/>
-		</Card.Content>
-		<Card.Footer class="{pokemonType.length === 1 ? 'grid-cols-1' : 'grid-cols-2'} grid place-items-center">
-			{#each pokemonType as type}
-				<TypeBadge {type} />
-			{/each}
-		</Card.Footer>
 	</Card.Root>
 </a>
