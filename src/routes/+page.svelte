@@ -6,11 +6,12 @@
 <h1 class="text-4xl">Os pokemon mais foda</h1>
 
 <div class="grid grid-cols-3 place-items-center gap-4">
-	{#each $page.data.pokemons as pokemon}
+	{#each $page.data.allPokemon as { name, pokedexNumber, type1, type2, image }}
 		<PokemonCard
-			pokemonName={pokemon.name || 'Pokemon foda'}
-			pokemonNumber={pokemon.pokedexNumber}
-			pokemonType={[pokemon.type1, pokemon.type2]}
+			{name}
+			{pokedexNumber}
+			type={[type1.typeName, type2 ? type2.typeName : null]}
+			{image}
 		/>
 	{/each}
 </div>

@@ -1,23 +1,22 @@
-import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core';
+import { text, integer, sqliteTable, blob } from 'drizzle-orm/sqlite-core';
 
 const pokemonTypes = sqliteTable('pokemonTypes', {
 	typeId: integer('id').primaryKey(),
 	typeName: text('name').notNull(),
-	damageRelations: text('damage_relations', { mode: 'json' })
-		.$type<{
-			no_damage_to: Array<number> | undefined;
-			half_damage_to: Array<number> | undefined;
-			double_damage_to: Array<number> | undefined;
-			no_damage_from: Array<number> | undefined;
-			half_damage_from: Array<number> | undefined;
-			double_damage_from: Array<number> | undefined;
-		}>()
+	typeEfficaciesAgainstThisType: text('type_efficacies_against_this_type', { mode: 'json' })
+		.$type<
+			Array<{
+				damageTypeId: number;
+				damageFactor: number;
+			}>
+		>()
 		.notNull()
 });
 
 const pokemon = sqliteTable('pokemon', {
 	pokedexNumber: integer('pokedex_number').primaryKey(),
 	name: text('name').notNull(),
+	image: blob('image').notNull(),
 	type1: integer('type1')
 		.references(() => pokemonTypes.typeId)
 		.notNull(),
