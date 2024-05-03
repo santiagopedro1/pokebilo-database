@@ -13,7 +13,7 @@
 </script>
 
 <a href={name}>
-	<Card.Root>
+	<Card.Root class="transition-colors duration-200  hover:border-black">
 		<Card.Content>
 			<img
 				src={'data:image/webp;base64,' + image}
