@@ -4,10 +4,8 @@
 
 	export let name: string;
 	export let pokedexNumber: number;
-	export let type: Array<PokemonType>;
+	export let type: Array<string>;
 	export let image: string;
-
-	type = type.filter(Boolean);
 
 	const paddedPokedexNumber = pokedexNumber.toString().padStart(3, '0');
 </script>
@@ -16,14 +14,17 @@
 	<Card.Root class="transition-colors duration-200  hover:border-black">
 		<Card.Content>
 			<img
-				src={'data:image/webp;base64,' + image}
+				src={image}
 				alt="Imagem foda"
+				class="w-72"
 			/>
 		</Card.Content>
-		<Card.Footer class="{type.length === 1 ? 'grid-cols-1' : 'grid-cols-2'} grid place-items-center">
-			{#each type as type}
-				<TypeBadge {type} />
-			{/each}
+		<Card.Footer class="">
+			<div class="flex w-full items-center justify-center gap-4">
+				{#each type as type}
+					<TypeBadge {type} />
+				{/each}
+			</div>
 		</Card.Footer>
 		<Card.Header class="-mt-8">
 			<Card.Title class="text-xl capitalize">{name}</Card.Title>

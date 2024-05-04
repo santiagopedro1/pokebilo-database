@@ -1,21 +1,24 @@
 <script lang="ts">
-	import { Badge } from './ui/badge';
-
 	export let type: string;
 	export let variant: 'minimal' | 'md' | 'lg' = 'md';
 </script>
 
 {#if variant === 'minimal'}
-	<Badge class="flex w-fit items-center justify-center gap-1 border-none py-1 text-lg capitalize">
+	<div class="flex items-center text-sm uppercase">
 		<img
-			src={'/' + type + '.png'}
-			alt={type + ' type'}
-			width="24"
+			src={`/${type}.svg`}
+			alt=""
+			class="size-7 justify-self-start rounded-s-lg {type}"
 		/>
-		{type}
-	</Badge>
+		<div class="w-24 justify-self-center rounded-e-lg bg-[#272a2e] p-1 font-bold">{type}</div>
+	</div>
 {:else}
-	<Badge class="{variant === 'lg' ? 'w-48 text-lg' : 'w-28 text-sm'} {type} flex items-center justify-center gap-1 py-1 capitalize">
-		{type}
-	</Badge>
+	<div class="flex items-center rounded-lg p-1 uppercase {type} {variant === 'lg' ? 'text-lg' : 'text-sm'}">
+		<img
+			src={`/${type}.svg`}
+			alt=""
+			class="justify-self-start {variant === 'lg' ? 'size-8' : 'size-6'}"
+		/>
+		<div class="justify-self-center font-bold {variant === 'lg' ? 'w-24' : 'w-20'}">{type}</div>
+	</div>
 {/if}

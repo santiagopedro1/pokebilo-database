@@ -1,4 +1,4 @@
-import { text, integer, sqliteTable, blob } from 'drizzle-orm/sqlite-core';
+import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 
 const pokemonTypes = sqliteTable('pokemonTypes', {
 	typeId: integer('id').primaryKey(),
@@ -16,11 +16,24 @@ const pokemonTypes = sqliteTable('pokemonTypes', {
 const pokemon = sqliteTable('pokemon', {
 	pokedexNumber: integer('pokedex_number').primaryKey(),
 	name: text('name').notNull(),
-	image: blob('image').notNull(),
-	type1: integer('type1')
-		.references(() => pokemonTypes.typeId)
+	genus: text('genus').notNull(),
+	stats: text('stats', { mode: 'json' })
+		.$type<{
+			hp: number;
+			attack: number;
+			defense: number;
+			specialAttack: number;
+			specialDefense: number;
+			speed: number;
+		}>()
 		.notNull(),
-	type2: integer('type2').references(() => pokemonTypes.typeId)
+	typing: text('typing', { mode: 'json' }).$type<[number] | [number, number]>().notNull(),
+	images: text('images', { mode: 'json' })
+		.$type<{
+			default: string;
+			shiny: string;
+		}>()
+		.notNull()
 });
 
 export { pokemonTypes, pokemon };

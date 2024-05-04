@@ -1,16 +1,7 @@
 <script lang="ts">
 	import TypeBadge from './TypeBadge.svelte';
 
-	export let types: {
-		typeId: number;
-		typeName: string;
-		typeEfficaciesAgainstThisType: {
-			damageTypeId: number;
-			damageFactor: number;
-		}[];
-	}[];
-
-	export let allTypes: {
+	export let typing: {
 		typeId: number;
 		typeName: string;
 		typeEfficaciesAgainstThisType: {
@@ -24,16 +15,28 @@
 		damageFactor: number;
 	}
 
-	function calculateTypeEffectiveness(
-		types: {
-			typeId: number;
-			typeName: string;
-			typeEfficaciesAgainstThisType: {
-				damageTypeId: number;
-				damageFactor: number;
-			}[];
-		}[]
-	) {
+	const typeIdToName = new Map([
+		[1, 'normal'],
+		[2, 'fighting'],
+		[3, 'flying'],
+		[4, 'poison'],
+		[5, 'ground'],
+		[6, 'rock'],
+		[7, 'bug'],
+		[8, 'ghost'],
+		[9, 'steel'],
+		[10, 'fire'],
+		[11, 'water'],
+		[12, 'grass'],
+		[13, 'electric'],
+		[14, 'psychic'],
+		[15, 'ice'],
+		[16, 'dragon'],
+		[17, 'dark'],
+		[18, 'fairy']
+	]);
+
+	function calculateTypeEffectiveness(types: typeof typing) {
 		const effectiveness: EffectivenessItem[] = [];
 
 		for (let i = 1; i <= 18; i++) {
@@ -41,7 +44,7 @@
 			for (let type of types) {
 				for (let eff of type.typeEfficaciesAgainstThisType) {
 					if (eff.damageTypeId === i) {
-						damageFactor *= eff.damageFactor / 100;
+						damageFactor *= eff.damageFactor;
 						break;
 					}
 				}
@@ -52,7 +55,7 @@
 		return effectiveness;
 	}
 
-	const pokemonTypeEff = calculateTypeEffectiveness(types);
+	const pokemonTypeEff = calculateTypeEffectiveness(typing);
 
 	const weakTo = pokemonTypeEff.filter((eff) => eff.damageFactor > 1).sort((a, b) => b.damageFactor - a.damageFactor);
 	const resistantTo = pokemonTypeEff.filter((eff) => eff.damageFactor < 1 && eff.damageFactor > 0).sort((a, b) => a.damageFactor - b.damageFactor);
@@ -65,6 +68,17 @@
 		'Immune to': immuneTo,
 		'Damaged normally by': neutralTo
 	};
+
+	const titleText: {
+		[key: number]: string;
+	} = {
+		0: 'Takes no damage',
+		0.25: 'Takes ¼× damage',
+		0.5: 'Takes ½× damage',
+		1: 'Takes normal damage',
+		2: 'Takes 2× damage',
+		4: 'Takes 4× damage'
+	};
 </script>
 
 <div class="grid gap-4">
@@ -73,15 +87,18 @@
 			<div class="self-center justify-self-end text-xl font-bold">{title}:</div>
 			<div class="flex flex-wrap gap-4">
 				{#each effs as { damageTypeId, damageFactor }}
-					<div class="flex items-center rounded-md border border-gray-500 px-2">
+					<div
+						class="flex items-center rounded-md px-2"
+						title={titleText[damageFactor]}
+					>
 						<TypeBadge
 							variant="minimal"
-							type={allTypes.find((type) => type.typeId === damageTypeId)?.typeName ?? 'none'}
+							type={typeIdToName.get(damageTypeId) || 'Unknown'}
 						/>
-						<div
-							class="{damageFactor === 1 && 'bg-gray-400 text-black'} {damageFactor === 2 && 'bg-red-500 text-black'} {damageFactor === 4 &&
-								'bg-red-800'} {damageFactor === 0.5 && 'bg-green-500 text-black'} {damageFactor === 0.25 && 'bg-green-800'} {damageFactor === 0 &&
-								'bg-black'} grid h-8 w-8 place-items-center rounded-full text-white"
+						<!-- <div
+							class="{damageFactor === 1 && 'bg-gray-400 text-black'} {damageFactor === 2 && 'bg-red-500 text-black'} {damageFactor ===
+								4 && 'bg-red-800'} {damageFactor === 0.5 && 'bg-green-500 text-black'} {damageFactor === 0.25 &&
+								'bg-green-800'} {damageFactor === 0 && 'bg-black'} grid h-8 w-8 place-items-center rounded-full text-white"
 						>
 							{#if damageFactor === 0}
 								0×
@@ -96,7 +113,7 @@
 							{:else if damageFactor === 4}
 								4×
 							{/if}
-						</div>
+						</div> -->
 					</div>
 				{/each}
 			</div>
