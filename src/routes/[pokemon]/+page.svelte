@@ -28,6 +28,7 @@
 	<PokemonSectionCard
 		title="Stats"
 		description="Base stats of this Pokémon"
+		headerBg={typing.length > 1 ? [typing[0].typeName, typing[1].typeName] : [typing[0].typeName]}
 	>
 		<PokemonStats {stats} />
 	</PokemonSectionCard>
@@ -35,6 +36,7 @@
 	<PokemonSectionCard
 		title="Alguma coisa"
 		description="Alguma coisa of this Pokémon"
+		headerBg={typing.length > 1 ? [typing[0].typeName, typing[1].typeName] : [typing[0].typeName]}
 	>
 		<p>sei la</p>
 	</PokemonSectionCard>
@@ -42,6 +44,7 @@
 	<PokemonSectionCard
 		title="Type effectiveness"
 		description="How effective are different types of moves against this Pokémon"
+		headerBg={typing.length > 1 ? [typing[0].typeName, typing[1].typeName] : [typing[0].typeName]}
 		size="lg"
 	>
 		<DamageEff {typing} />

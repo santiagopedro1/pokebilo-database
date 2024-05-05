@@ -8,7 +8,7 @@
 			<img
 				src="/pokepedia.png"
 				alt=""
-				class="w-60"
+				class="w-52"
 			/>
 		</a>
 	</header>

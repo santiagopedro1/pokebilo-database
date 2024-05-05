@@ -20,6 +20,9 @@ importers:
       drizzle-orm:
         specifier: ^0.30.9
         version: 0.30.9(@types/better-sqlite3@7.6.10)(better-sqlite3@9.6.0)
+      lucide-svelte:
+        specifier: ^0.378.0
+        version: 0.378.0(svelte@4.2.15)
       svelte-radix:
         specifier: ^1.1.0
         version: 1.1.0(svelte@4.2.15)
@@ -1662,6 +1665,11 @@ packages:
 
   lru-queue@0.1.0:
     resolution: {integrity: sha512-BpdYkt9EvGl8OfWHDQPISVpcl5xZthb+XPsbELj5AQXxIC8IriDZIQYjBJPEm5rS420sjZ0TLEzRcq5KdBhYrQ==}
+
+  lucide-svelte@0.378.0:
+    resolution: {integrity: sha512-T7hV1sfOc94AWE5GOJ6r9wGEsR4h4TJr8d4Z0sM8O0e3IBcmeIvEGRAA6jCp7NGy4PeGrn5Tju6Y2JwJQntNrQ==}
+    peerDependencies:
+      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   magic-string@0.30.10:
     resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
@@ -3872,6 +3880,10 @@ snapshots:
   lru-queue@0.1.0:
     dependencies:
       es5-ext: 0.10.64
+
+  lucide-svelte@0.378.0(svelte@4.2.15):
+    dependencies:
+      svelte: 4.2.15
 
   magic-string@0.30.10:
     dependencies:
