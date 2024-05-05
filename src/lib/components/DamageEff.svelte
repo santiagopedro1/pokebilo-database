@@ -86,36 +86,45 @@
 		<div class="grid grid-cols-[250px_1fr] gap-8">
 			<div class="self-center justify-self-end text-xl font-bold">{title}:</div>
 			<div class="flex flex-wrap gap-4">
-				{#each effs as { damageTypeId, damageFactor }}
-					<div
-						class="flex items-center rounded-md px-2"
-						title={titleText[damageFactor]}
-					>
+				{#if !effs.length}
+					<div class="flex items-center rounded-md px-2">
 						<TypeBadge
 							variant="minimal"
-							type={typeIdToName.get(damageTypeId) || 'Unknown'}
+							type={'none'}
 						/>
-						<!-- <div
-							class="{damageFactor === 1 && 'bg-gray-400 text-black'} {damageFactor === 2 && 'bg-red-500 text-black'} {damageFactor ===
-								4 && 'bg-red-800'} {damageFactor === 0.5 && 'bg-green-500 text-black'} {damageFactor === 0.25 &&
-								'bg-green-800'} {damageFactor === 0 && 'bg-black'} grid h-8 w-8 place-items-center rounded-full text-white"
-						>
-							{#if damageFactor === 0}
-								0×
-							{:else if damageFactor === 0.25}
-								¼×
-							{:else if damageFactor === 0.5}
-								½×
-							{:else if damageFactor === 1}
-								1×
-							{:else if damageFactor === 2}
-								2×
-							{:else if damageFactor === 4}
-								4×
-							{/if}
-						</div> -->
 					</div>
-				{/each}
+				{:else}
+					{#each effs as { damageTypeId, damageFactor }}
+						<div
+							class="flex items-center rounded-md px-2"
+							title={titleText[damageFactor]}
+						>
+							<TypeBadge
+								variant="minimal"
+								type={typeIdToName.get(damageTypeId) || 'Unknown'}
+							/>
+							<!-- <div
+						class="{damageFactor === 1 && 'bg-gray-400 text-black'} {damageFactor === 2 && 'bg-red-500 text-black'} {damageFactor ===
+							4 && 'bg-red-800'} {damageFactor === 0.5 && 'bg-green-500 text-black'} {damageFactor === 0.25 &&
+							'bg-green-800'} {damageFactor === 0 && 'bg-black'} grid h-8 w-8 place-items-center rounded-full text-white"
+					>
+						{#if damageFactor === 0}
+							0×
+						{:else if damageFactor === 0.25}
+							¼×
+						{:else if damageFactor === 0.5}
+							½×
+						{:else if damageFactor === 1}
+							1×
+						{:else if damageFactor === 2}
+							2×
+						{:else if damageFactor === 4}
+							4×
+						{/if}
+					</div> -->
+						</div>
+					{/each}
+				{/if}
 			</div>
 		</div>
 		<hr />
