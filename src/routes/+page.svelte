@@ -51,18 +51,22 @@
 </div>
 
 <div class="grid grid-cols-3 place-items-center gap-4">
-	{#if pokemonList}
-		{#if pokemonList.length > 0}
-			{#each pokemonList as { name, pokedexNumber, typing, image }}
-				<PokemonCard
-					{name}
-					{pokedexNumber}
-					type={typing}
-					{image}
-				/>
-			{/each}
-		{:else}
-			<p>No Pokémon found</p>
-		{/if}
+	{#if pokemonList.length > 0}
+		{#each pokemonList as { name, pokedexNumber, typing, image }}
+			<PokemonCard
+				{name}
+				{pokedexNumber}
+				{typing}
+				{image}
+			/>
+		{/each}
+	{:else}
+		<div class="col-span-3 space-y-4 text-center text-3xl">
+			<p>No Pokémon found!</p>
+			<img
+				src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXkzOGIycmVrZ3Ewcm5yMjYwcmcxbmczYXNldzU0cTVyN3RxbHBheCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/12Bpme5pTzGmg8/giphy.gif"
+				alt="Sad pikachu gif"
+			/>
+		</div>
 	{/if}
 </div>

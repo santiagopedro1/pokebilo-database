@@ -4,7 +4,7 @@
 
 	export let name: string;
 	export let pokedexNumber: number;
-	export let type: Array<string>;
+	export let typing: Array<string>;
 	export let image: string;
 
 	const typeBorders: { [key: string]: string[] } = {
@@ -31,9 +31,9 @@
 
 <a href={name}>
 	<Card.Root
-		class="border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {type.length > 1
-			? `${typeBorders[type[0]][0]} ${typeBorders[type[1]][1]}`
-			: `${typeBorders[type[0]][0]} ${typeBorders[type[0]][1]}`}"
+		class="border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {typing.length > 1
+			? `${typeBorders[typing[0]][0]} ${typeBorders[typing[1]][1]}`
+			: `${typeBorders[typing[0]][0]} ${typeBorders[typing[0]][1]}`}"
 	>
 		<Card.Header>
 			<img
@@ -44,7 +44,7 @@
 			/>
 		</Card.Header>
 		<div class="flex w-full items-center justify-center gap-4">
-			{#each type as type}
+			{#each typing as type}
 				<TypeBadge {type} />
 			{/each}
 		</div>
