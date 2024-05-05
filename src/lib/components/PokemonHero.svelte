@@ -16,8 +16,8 @@
 	let shiny = false;
 </script>
 
-<div class="grid w-full grid-cols-2 place-items-center">
-	<div>
+<div class="grid w-full grid-cols-2 place-items-center gap-8">
+	<div class="justify-self-end">
 		<img
 			src={shiny ? images.shiny : images.default}
 			alt={'An image of the pokemon ' + name}
@@ -31,7 +31,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="grid w-full place-items-center gap-4 justify-self-start">
+	<div class="grid w-max place-items-center gap-4 justify-self-start">
 		<div class="grid items-center">
 			<h1 class="text-6xl font-extrabold uppercase">{name}</h1>
 			<span class="text-center text-gray-400">#{paddedPokedexNumber}</span>
