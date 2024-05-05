@@ -12,14 +12,18 @@
 		<div class="flex items-center text-sm uppercase">
 			<img
 				src={`/${type}.svg`}
-				alt=""
-				class="size-7 justify-self-start rounded-s-lg {type}"
+				alt={type + ' type icon'}
+				class="size-7 justify-self-start rounded-s-lg"
+				style={'background-color: var(--{type})'}
 			/>
 			<div class="w-24 rounded-e-lg bg-[#272a2e] p-1 text-center font-bold">{type}</div>
 		</div>
 	{/if}
 {:else}
-	<div class="flex items-center rounded-lg p-1 uppercase {type} {variant === 'lg' ? 'text-lg' : 'text-sm'}">
+	<div
+		class="flex items-center rounded-lg p-1 uppercase {variant === 'lg' ? 'text-lg' : 'text-sm'}"
+		style={`background-color: var(--${type})`}
+	>
 		<img
 			src={`/${type}.svg`}
 			alt=""

@@ -11,24 +11,26 @@
 </script>
 
 <a href={name}>
-	<Card.Root class="transition-colors duration-200  hover:border-black">
-		<Card.Content>
+	<Card.Root
+		class="text-center transition-colors hover:!border-white"
+		style={`border-color: var(--${type[0]})`}
+	>
+		<Card.Header>
 			<img
 				src={image}
 				alt="Imagem foda"
 				class="w-72"
+				loading="lazy"
 			/>
-		</Card.Content>
-		<Card.Footer class="">
-			<div class="flex w-full items-center justify-center gap-4">
-				{#each type as type}
-					<TypeBadge {type} />
-				{/each}
-			</div>
-		</Card.Footer>
-		<Card.Header class="-mt-8">
+		</Card.Header>
+		<div class="flex w-full items-center justify-center gap-4">
+			{#each type as type}
+				<TypeBadge {type} />
+			{/each}
+		</div>
+		<Card.Content>
 			<Card.Title class="text-xl capitalize">{name}</Card.Title>
 			<Card.Description>#{paddedPokedexNumber}</Card.Description>
-		</Card.Header>
+		</Card.Content>
 	</Card.Root>
 </a>
