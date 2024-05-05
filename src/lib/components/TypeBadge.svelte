@@ -2,7 +2,7 @@
 	export let type: string;
 	export let variant: 'minimal' | 'md' | 'lg' = 'md';
 
-	const typeBg: { [key: string]: string } = {
+	const typeBgColor: { [key: string]: string } = {
 		normal: 'bg-types-normal',
 		fighting: 'bg-types-fighting',
 		flying: 'bg-types-flying',
@@ -34,13 +34,13 @@
 			<img
 				src={`/${type}.svg`}
 				alt={type + ' type icon'}
-				class="size-7 rounded-s-lg {typeBg[type]}"
+				class="size-7 rounded-s-lg {typeBgColor[type]}"
 			/>
 			<div class="w-24 rounded-e-lg bg-[#272a2e] p-1 text-center font-bold">{type}</div>
 		</div>
 	{/if}
 {:else}
-	<div class="flex items-center rounded-lg p-1 uppercase {typeBg[type]} {variant === 'lg' ? 'text-lg' : 'text-sm'}">
+	<div class="flex items-center rounded-lg p-1 uppercase {typeBgColor[type]} {variant === 'lg' ? 'text-lg' : 'text-sm'}">
 		<img
 			src={`/${type}.svg`}
 			alt=""

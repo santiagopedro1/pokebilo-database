@@ -6,7 +6,7 @@
 	export let headerBg: string[];
 	export let size: 'default' | 'lg' = 'default';
 
-	const typeBg: { [key: string]: string[] } = {
+	const typeGradient: { [key: string]: string[] } = {
 		normal: ['from-types-normal', 'to-types-normal'],
 		fighting: ['from-types-fighting', 'to-types-fighting'],
 		flying: ['from-types-flying', 'to-types-flying'],
@@ -31,8 +31,8 @@
 <Card.Root class="space-y-8 text-white {size === 'lg' ? 'col-span-2' : ''}">
 	<Card.Header
 		class="rounded-t-lg bg-gradient-to-r {headerBg.length > 1
-			? `${typeBg[headerBg[0]][0]} ${typeBg[headerBg[1]][1]}`
-			: `${typeBg[headerBg[0]][0]} ${typeBg[headerBg[0]][1]}`}"
+			? `${typeGradient[headerBg[0]][0]} ${typeGradient[headerBg[1]][1]}`
+			: `${typeGradient[headerBg[0]][0]} ${typeGradient[headerBg[0]][1]}`}"
 	>
 		<Card.Title class="text-3xl font-extrabold">{title}</Card.Title>
 		<Card.Description class="text-white">{description}</Card.Description>

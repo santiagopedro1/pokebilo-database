@@ -1,6 +1,6 @@
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 
-const pokemonTypes = sqliteTable('pokemonTypes', {
+export const pokemonTypeSchema = sqliteTable('pokemonTypes', {
 	typeId: integer('id').primaryKey(),
 	typeName: text('name').notNull(),
 	typeEfficaciesAgainstThisType: text('type_efficacies_against_this_type', { mode: 'json' })
@@ -13,7 +13,7 @@ const pokemonTypes = sqliteTable('pokemonTypes', {
 		.notNull()
 });
 
-const pokemon = sqliteTable('pokemon', {
+export const pokemonSchema = sqliteTable('pokemon', {
 	pokedexNumber: integer('pokedex_number').primaryKey(),
 	name: text('name').notNull(),
 	genus: text('genus').notNull(),
@@ -35,5 +35,3 @@ const pokemon = sqliteTable('pokemon', {
 		}>()
 		.notNull()
 });
-
-export { pokemonTypes, pokemon };

@@ -7,7 +7,7 @@
 	export let type: Array<string>;
 	export let image: string;
 
-	const typeColors: { [key: string]: string[] } = {
+	const typeBorders: { [key: string]: string[] } = {
 		normal: ['border-l-types-normal border-t-types-normal', 'border-r-types-normal border-b-types-normal'],
 		fire: ['border-l-types-fire border-t-types-fire', 'border-r-types-fire border-b-types-fire'],
 		water: ['border-l-types-water border-t-types-water', 'border-r-types-water border-b-types-water'],
@@ -32,8 +32,8 @@
 <a href={name}>
 	<Card.Root
 		class="border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {type.length > 1
-			? `${typeColors[type[0]][0]} ${typeColors[type[1]][1]}`
-			: `${typeColors[type[0]][0]} ${typeColors[type[0]][1]}`}"
+			? `${typeBorders[type[0]][0]} ${typeBorders[type[1]][1]}`
+			: `${typeBorders[type[0]][0]} ${typeBorders[type[0]][1]}`}"
 	>
 		<Card.Header>
 			<img
@@ -50,7 +50,7 @@
 		</div>
 		<Card.Content>
 			<Card.Title class="text-xl capitalize">{name}</Card.Title>
-			<Card.Description>#{pokedexNumber.toString().padStart(3, '0')}</Card.Description>
+			<Card.Description>#{pokedexNumber.toString().padStart(4, '0')}</Card.Description>
 		</Card.Content>
 	</Card.Root>
 </a>
