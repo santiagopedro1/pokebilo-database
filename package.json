@@ -44,6 +44,7 @@
 		"bits-ui": "^0.21.7",
 		"clsx": "^2.1.1",
 		"drizzle-orm": "^0.30.9",
+		"svelte-radix": "^1.1.0",
 		"tailwind-merge": "^2.3.0",
 		"tailwind-variants": "^0.2.1"
 	}

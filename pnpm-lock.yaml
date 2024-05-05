@@ -20,6 +20,9 @@ importers:
       drizzle-orm:
         specifier: ^0.30.9
         version: 0.30.9(@types/better-sqlite3@7.6.10)(better-sqlite3@9.6.0)
+      svelte-radix:
+        specifier: ^1.1.0
+        version: 1.1.0(svelte@4.2.15)
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0
@@ -2279,6 +2282,11 @@ packages:
       typescript:
         optional: true
 
+  svelte-radix@1.1.0:
+    resolution: {integrity: sha512-kyE9wZiJV937INGb+wiBkAjmGtQUUYRPkVL2Q+/gj+9Vog1Ewd2wNvNmpNMUd+c+euxoc5u5YZMuCUgky9EUPw==}
+    peerDependencies:
+      svelte: ^3.54.0 || ^4.0.0 || ^5.0.0
+
   svelte@4.2.15:
     resolution: {integrity: sha512-j9KJSccHgLeRERPlhMKrCXpk2TqL2m5Z+k+OBTQhZOhIdCCd3WfqV+ylPWeipEwq17P/ekiSFWwrVQv93i3bsg==}
     engines: {node: '>=16'}
@@ -4409,6 +4417,10 @@ snapshots:
       postcss: 8.4.38
       postcss-load-config: 5.0.3(jiti@1.21.0)(postcss@8.4.38)
       typescript: 5.4.5
+
+  svelte-radix@1.1.0(svelte@4.2.15):
+    dependencies:
+      svelte: 4.2.15
 
   svelte@4.2.15:
     dependencies:
