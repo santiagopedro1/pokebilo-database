@@ -7,8 +7,6 @@
 	export let type: Array<string>;
 	export let image: string;
 
-	const paddedPokedexNumber = pokedexNumber.toString().padStart(3, '0');
-
 	const typeColors: { [key: string]: string[] } = {
 		normal: ['border-l-types-normal border-t-types-normal', 'border-r-types-normal border-b-types-normal'],
 		fire: ['border-l-types-fire border-t-types-fire', 'border-r-types-fire border-b-types-fire'],
@@ -52,7 +50,7 @@
 		</div>
 		<Card.Content>
 			<Card.Title class="text-xl capitalize">{name}</Card.Title>
-			<Card.Description>#{paddedPokedexNumber}</Card.Description>
+			<Card.Description>#{pokedexNumber.toString().padStart(3, '0')}</Card.Description>
 		</Card.Content>
 	</Card.Root>
 </a>
