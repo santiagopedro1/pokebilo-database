@@ -1,6 +1,27 @@
 <script lang="ts">
 	export let type: string;
 	export let variant: 'minimal' | 'md' | 'lg' = 'md';
+
+	const typeBg: { [key: string]: string } = {
+		normal: 'bg-types-normal',
+		fighting: 'bg-types-fighting',
+		flying: 'bg-types-flying',
+		poison: 'bg-types-poison',
+		ground: 'bg-types-ground',
+		rock: 'bg-types-rock',
+		bug: 'bg-types-bug',
+		ghost: 'bg-types-ghost',
+		steel: 'bg-types-steel',
+		fire: 'bg-types-fire',
+		water: 'bg-types-water',
+		grass: 'bg-types-grass',
+		electric: 'bg-types-electric',
+		psychic: 'bg-types-psychic',
+		ice: 'bg-types-ice',
+		dragon: 'bg-types-dragon',
+		dark: 'bg-types-dark',
+		fairy: 'bg-types-fairy'
+	};
 </script>
 
 {#if variant === 'minimal'}
@@ -13,17 +34,13 @@
 			<img
 				src={`/${type}.svg`}
 				alt={type + ' type icon'}
-				class="size-7 justify-self-start rounded-s-lg"
-				style={'background-color: var(--{type})'}
+				class="size-7 rounded-s-lg {typeBg[type]}"
 			/>
 			<div class="w-24 rounded-e-lg bg-[#272a2e] p-1 text-center font-bold">{type}</div>
 		</div>
 	{/if}
 {:else}
-	<div
-		class="flex items-center rounded-lg p-1 uppercase {variant === 'lg' ? 'text-lg' : 'text-sm'}"
-		style={`background-color: var(--${type})`}
-	>
+	<div class="flex items-center rounded-lg p-1 uppercase {typeBg[type]} {variant === 'lg' ? 'text-lg' : 'text-sm'}">
 		<img
 			src={`/${type}.svg`}
 			alt=""
