@@ -25,7 +25,7 @@ function arrayBufferToBase64(buffer: ArrayBuffer) {
 const { pokemon } = schema;
 const P = new Pokedex();
 
-const maxPokemon = 100;
+const maxPokemon = 151;
 
 const pokemons: {
 	pokedexNumber: number;
@@ -46,7 +46,7 @@ const pokemons: {
 	};
 }[] = [];
 
-for (let i = 10; i <= maxPokemon; i++) {
+for (let i = 1; i <= maxPokemon; i++) {
 	const pokebilo = await P.getPokemonByName(i);
 	const pokebiloSpecies = await P.getPokemonSpeciesByName(i);
 

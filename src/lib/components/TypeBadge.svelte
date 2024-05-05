@@ -10,7 +10,7 @@
 			alt=""
 			class="size-7 justify-self-start rounded-s-lg {type}"
 		/>
-		<div class="w-24 justify-self-center rounded-e-lg bg-[#272a2e] p-1 font-bold">{type}</div>
+		<div class="w-24 rounded-e-lg bg-[#272a2e] p-1 text-center font-bold">{type}</div>
 	</div>
 {:else}
 	<div class="flex items-center rounded-lg p-1 uppercase {type} {variant === 'lg' ? 'text-lg' : 'text-sm'}">
@@ -19,6 +19,6 @@
 			alt=""
 			class="justify-self-start {variant === 'lg' ? 'size-8' : 'size-6'}"
 		/>
-		<div class="justify-self-center font-bold {variant === 'lg' ? 'w-24' : 'w-20'}">{type}</div>
+		<div class="text-center font-bold {variant === 'lg' ? 'w-24' : 'w-20'}">{type}</div>
 	</div>
 {/if}

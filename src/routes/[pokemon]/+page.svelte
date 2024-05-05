@@ -1,6 +1,8 @@
 <script lang="ts">
 	import DamageEff from '$lib/components/DamageEff.svelte';
 	import PokemonHero from '$lib/components/PokemonHero.svelte';
+	import PokemonSectionCard from '$lib/components/PokemonSectionCard.svelte';
+	import PokemonStats from '$lib/components/PokemonStats.svelte';
 
 	import type { PageServerData } from './$types';
 
@@ -22,7 +24,26 @@
 
 <PokemonHero {poke} />
 
-<div class="space-y-8">
-	<h2 class="text-start text-3xl font-extrabold">Type effectiveness:</h2>
-	<DamageEff {typing} />
+<div class="grid grid-cols-2 gap-4">
+	<PokemonSectionCard
+		title="Stats"
+		description="Base stats of this Pokémon"
+	>
+		<PokemonStats {stats} />
+	</PokemonSectionCard>
+
+	<PokemonSectionCard
+		title="Alguma coisa"
+		description="Alguma coisa of this Pokémon"
+	>
+		<p>sei la</p>
+	</PokemonSectionCard>
+
+	<PokemonSectionCard
+		title="Type effectiveness"
+		description="How effective are different types of moves against this Pokémon"
+		size="lg"
+	>
+		<DamageEff {typing} />
+	</PokemonSectionCard>
 </div>

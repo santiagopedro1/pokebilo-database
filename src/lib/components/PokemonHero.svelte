@@ -34,7 +34,7 @@
 	<div class="grid w-full place-items-center gap-4 justify-self-start">
 		<div class="grid items-center">
 			<h1 class="text-6xl font-extrabold uppercase">{name}</h1>
-			<span class="text-gray-400">#{paddedPokedexNumber}</span>
+			<span class="text-center text-gray-400">#{paddedPokedexNumber}</span>
 		</div>
 		<h2 class="text-2xl">The {genus}</h2>
 		<Toggle
