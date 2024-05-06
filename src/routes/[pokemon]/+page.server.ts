@@ -2,7 +2,7 @@ import type { PageServerLoad } from './$types';
 
 import { error } from '@sveltejs/kit';
 
-import { getPokemonByNameOrId } from '$lib/db';
+import { getPokemonByNameOrId } from '$lib';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const pokemon = await getPokemonByNameOrId(params.pokemon);

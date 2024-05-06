@@ -31,7 +31,7 @@
 
 <a href={name}>
 	<Card.Root
-		class="border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {typing.length > 1
+		class="group border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {typing.length > 1
 			? `${typeBorders[typing[0]][0]} ${typeBorders[typing[1]][1]}`
 			: `${typeBorders[typing[0]][0]} ${typeBorders[typing[0]][1]}`}"
 	>
@@ -39,7 +39,7 @@
 			<img
 				src={image}
 				alt="Imagem foda"
-				class="w-72"
+				class="w-72 object-cover transition-transform group-hover:scale-[1.2]"
 				loading="lazy"
 			/>
 		</Card.Header>

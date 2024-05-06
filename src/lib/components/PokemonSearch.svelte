@@ -4,20 +4,23 @@
 
 	import { Info } from 'lucide-svelte';
 
-	export let value = '';
+	import { createEventDispatcher } from 'svelte';
+
+	export let searchQuery: string;
+
+	const dispatch = createEventDispatcher();
 </script>
 
 <div class="flex w-full items-center justify-center gap-2">
-	<label for="search">Search:</label>
+	<label for="search">Search Pokémon:</label>
 	<Input
 		id="search"
-		placeholder="Name or Pokédex number"
 		class="max-w-80"
-		bind:value
-		on:input
+		bind:value={searchQuery}
+		on:input={() => dispatch('search')}
 	/>
 	<Tooltip.Root>
-		<Tooltip.Trigger>
+		<Tooltip.Trigger class="cursor-help">
 			<Info class="size-6" />
 		</Tooltip.Trigger>
 		<Tooltip.Content>

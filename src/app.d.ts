@@ -8,25 +8,13 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
-	type PokemonType =
-		| 'normal'
-		| 'fire'
-		| 'water'
-		| 'electric'
-		| 'grass'
-		| 'ice'
-		| 'fighting'
-		| 'poison'
-		| 'ground'
-		| 'flying'
-		| 'psychic'
-		| 'bug'
-		| 'rock'
-		| 'ghost'
-		| 'dragon'
-		| 'dark'
-		| 'steel'
-		| 'fairy';
+
+	interface BasicPokemonInfo {
+		image: string;
+		typing: Array<string>;
+		pokedexNumber: number;
+		name: string;
+	}
 }
 
 export {};
