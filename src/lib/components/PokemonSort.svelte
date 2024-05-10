@@ -10,7 +10,7 @@
 		{ value: 'nameDesc', label: 'Name (Desc)' }
 	];
 
-	export let pokemonList: Array<BasicPokemonInfo>;
+	export let pokemonList: Array<Pokemon>;
 
 	const sortPokemon = (order: Selected<string> | undefined) => {
 		if (!order) return;

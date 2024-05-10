@@ -1,9 +1,9 @@
 import type { PageServerLoad } from './$types';
 
-import { getBasicPokemonInfo, getAllTypesNames } from '$lib';
+import { getAllPokemon, getAllTypes } from '$lib';
 
 export const load: PageServerLoad = async () => {
-	const allPokemon = await getBasicPokemonInfo();
-	const allTypesNames = await getAllTypesNames();
-	return { allPokemon, allTypesNames };
+	const allPokemon = await getAllPokemon();
+	const allTypes = await getAllTypes();
+	return { allPokemon, allTypes };
 };

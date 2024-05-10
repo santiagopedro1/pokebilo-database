@@ -8,27 +8,17 @@
 
 	export let data: PageServerData;
 
-	const { pokemon } = data;
-	const { name, pokedexNumber, typing, images, stats, genus } = pokemon;
-
-	const paddedPokedexNumber = pokedexNumber.toString().padStart(3, '0');
-
-	const poke = {
-		name,
-		paddedPokedexNumber,
-		typing,
-		images,
-		genus
-	};
+	const { pokemon, allTypesBasicInfo } = data;
+	const { type1, type2, stats } = pokemon;
 </script>
 
-<PokemonHero {poke} />
+<PokemonHero {pokemon} />
 
 <div class="grid grid-cols-2 gap-4">
 	<PokemonSectionCard
 		title="Stats"
 		description="Base stats of this Pokémon"
-		headerBg={typing.length > 1 ? [typing[0].typeName, typing[1].typeName] : [typing[0].typeName]}
+		headerBg={type2 ? [type1.name, type2.name] : [type1.name]}
 	>
 		<PokemonStats {stats} />
 	</PokemonSectionCard>
@@ -36,7 +26,7 @@
 	<PokemonSectionCard
 		title="Alguma coisa"
 		description="Alguma coisa of this Pokémon"
-		headerBg={typing.length > 1 ? [typing[0].typeName, typing[1].typeName] : [typing[0].typeName]}
+		headerBg={type2 ? [type1.name, type2.name] : [type1.name]}
 	>
 		<p>sei la</p>
 	</PokemonSectionCard>
@@ -44,9 +34,12 @@
 	<PokemonSectionCard
 		title="Type effectiveness"
 		description="How effective are different types of moves against this Pokémon"
-		headerBg={typing.length > 1 ? [typing[0].typeName, typing[1].typeName] : [typing[0].typeName]}
+		headerBg={type2 ? [type1.name, type2.name] : [type1.name]}
 		size="lg"
 	>
-		<DamageEff {typing} />
+		<DamageEff
+			pokemonType={[type1, type2]}
+			{allTypesBasicInfo}
+		/>
 	</PokemonSectionCard>
 </div>

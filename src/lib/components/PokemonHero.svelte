@@ -4,15 +4,9 @@
 
 	import { Toggle } from '$lib/components/ui/toggle/';
 
-	export let poke: {
-		name: string;
-		paddedPokedexNumber: string;
-		typing: { typeName: string; typeId: number; typeEfficaciesAgainstThisType: { damageTypeId: number; damageFactor: number }[] }[];
-		images: { default: string; shiny: string };
-		genus: string;
-	};
+	export let pokemon: CompletePokemonInfo;
 
-	const { name, paddedPokedexNumber, typing, images, genus } = poke;
+	const { pokedexNumber, name, type1, type2, images, genus } = pokemon;
 
 	let shiny = false;
 </script>
@@ -24,18 +18,22 @@
 			alt={'An image of the pokemon ' + name}
 		/>
 		<div class="flex justify-center gap-8">
-			{#each typing as { typeName }}
+			<TypeBadge
+				type={type1}
+				variant="lg"
+			/>
+			{#if type2}
 				<TypeBadge
+					type={type2}
 					variant="lg"
-					type={typeName}
 				/>
-			{/each}
+			{/if}
 		</div>
 	</div>
 	<div class="grid w-max place-items-center gap-4 justify-self-start">
 		<div class="grid items-center">
 			<h1 class="text-6xl font-extrabold uppercase">{name}</h1>
-			<span class="text-center text-gray-400">#{paddedPokedexNumber}</span>
+			<span class="text-center text-gray-400">#{pokedexNumber.toString().padStart(4, '0')}</span>
 		</div>
 		<h2 class="text-2xl">The {genus}</h2>
 		<Toggle

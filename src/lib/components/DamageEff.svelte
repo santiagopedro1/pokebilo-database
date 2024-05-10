@@ -1,131 +1,120 @@
 <script lang="ts">
 	import TypeBadge from './TypeBadge.svelte';
 
-	export let typing: {
-		typeId: number;
-		typeName: string;
-		typeEfficaciesAgainstThisType: {
-			damageTypeId: number;
-			damageFactor: number;
-		}[];
-	}[];
+	export let pokemonType: [PokemonType, PokemonType | null];
+	export let allTypesBasicInfo: Array<TypeBasicInfo>;
 
-	interface EffectivenessItem {
-		damageTypeId: number;
-		damageFactor: number;
-	}
+	function calculateTypeEffectiveness(types: [PokemonType, PokemonType | null], allTypes: Array<TypeBasicInfo>) {
+		const effectiveness = {
+			res: {
+				normal: [] as string[],
+				doubleRes: [] as string[]
+			},
+			weak: {
+				normal: [] as string[],
+				doubleWeak: [] as string[]
+			},
+			immune: [] as string[],
+			normal: [] as string[]
+		};
 
-	const typeIdToName = new Map([
-		[1, 'normal'],
-		[2, 'fighting'],
-		[3, 'flying'],
-		[4, 'poison'],
-		[5, 'ground'],
-		[6, 'rock'],
-		[7, 'bug'],
-		[8, 'ghost'],
-		[9, 'steel'],
-		[10, 'fire'],
-		[11, 'water'],
-		[12, 'grass'],
-		[13, 'electric'],
-		[14, 'psychic'],
-		[15, 'ice'],
-		[16, 'dragon'],
-		[17, 'dark'],
-		[18, 'fairy']
-	]);
-
-	function calculateTypeEffectiveness(types: typeof typing) {
-		const effectiveness: EffectivenessItem[] = [];
-
-		for (let i = 1; i <= 18; i++) {
-			let damageFactor = 1;
-			for (let type of types) {
-				for (let eff of type.typeEfficaciesAgainstThisType) {
-					if (eff.damageTypeId === i) {
-						damageFactor *= eff.damageFactor;
+		for (const type of allTypes) {
+			let mult = 1;
+			for (const pokemonType of types) {
+				if (pokemonType) {
+					if (pokemonType.damageRelations.defensive.weak.includes(type.id)) {
+						mult *= 2;
+					} else if (pokemonType.damageRelations.defensive.resists.includes(type.id)) {
+						mult *= 0.5;
+					} else if (pokemonType.damageRelations.defensive.immune.includes(type.id)) {
+						mult *= 0;
 						break;
 					}
 				}
 			}
-			effectiveness.push({ damageTypeId: i, damageFactor });
+			switch (mult) {
+				case 0.25:
+					effectiveness.res.doubleRes.push(type.name);
+					break;
+				case 0.5:
+					effectiveness.res.normal.push(type.name);
+					break;
+				case 0:
+					effectiveness.immune.push(type.name);
+					break;
+				case 1:
+					effectiveness.normal.push(type.name);
+					break;
+				case 2:
+					effectiveness.weak.normal.push(type.name);
+					break;
+				case 4:
+					effectiveness.weak.doubleWeak.push(type.name);
+					break;
+			}
 		}
-
 		return effectiveness;
 	}
 
-	const pokemonTypeEff = calculateTypeEffectiveness(typing);
+	function getType(typeName: string) {
+		return allTypesBasicInfo.find((type) => type.name === typeName)!;
+	}
 
-	const weakTo = pokemonTypeEff.filter((eff) => eff.damageFactor > 1).sort((a, b) => b.damageFactor - a.damageFactor);
-	const resistantTo = pokemonTypeEff.filter((eff) => eff.damageFactor < 1 && eff.damageFactor > 0).sort((a, b) => a.damageFactor - b.damageFactor);
-	const immuneTo = pokemonTypeEff.filter((eff) => eff.damageFactor === 0);
-	const neutralTo = pokemonTypeEff.filter((eff) => eff.damageFactor === 1);
-
-	const typeEff = {
-		'Weak to': weakTo,
-		'Resistant to': resistantTo,
-		'Immune to': immuneTo,
-		'Damaged normally by': neutralTo
+	const pokemonTypeEff = calculateTypeEffectiveness(pokemonType, allTypesBasicInfo);
+	const titleMap: { [key: string]: string } = {
+		res: 'Resistant to:',
+		weak: 'Weak to:',
+		immune: 'Immune to:',
+		normal: 'Damaged normally by:'
 	};
-
-	const titleText: {
-		[key: number]: string;
-	} = {
-		0: 'Takes no damage',
-		0.25: 'Takes ¼× damage',
-		0.5: 'Takes ½× damage',
-		1: 'Takes normal damage',
-		2: 'Takes 2× damage',
-		4: 'Takes 4× damage'
+	const resMap: { [key: string]: string } = {
+		normal: '½ ×',
+		doubleRes: '¼ ×'
+	};
+	const weakMap: { [key: string]: string } = {
+		normal: '2 ×',
+		doubleWeak: '4 ×'
 	};
 </script>
 
 <div class="grid gap-4">
-	{#each Object.entries(typeEff) as [title, effs]}
+	{#each Object.entries(pokemonTypeEff) as [title, effs]}
 		<div class="grid grid-cols-[250px_1fr] gap-8">
-			<div class="self-center justify-self-end text-xl font-bold">{title}:</div>
-			<div class="flex flex-wrap gap-4">
-				{#if !effs.length}
-					<div class="flex items-center rounded-md px-2">
-						<TypeBadge
-							variant="minimal"
-							type={'none'}
-						/>
-					</div>
-				{:else}
-					{#each effs as { damageTypeId, damageFactor }}
-						<div
-							class="flex items-center rounded-md px-2"
-							title={titleText[damageFactor]}
-						>
+			<div class="self-center justify-self-end text-xl font-bold">{titleMap[title]}</div>
+			{#if Array.isArray(effs)}
+				<div class="flex flex-wrap gap-4">
+					{#if effs.length === 0}
+						<TypeBadge variant="minimal" />
+					{:else}
+						{#each effs as typeName}
 							<TypeBadge
+								type={getType(typeName)}
 								variant="minimal"
-								type={typeIdToName.get(damageTypeId) || 'Unknown'}
 							/>
-							<!-- <div
-						class="{damageFactor === 1 && 'bg-gray-400 text-black'} {damageFactor === 2 && 'bg-red-500 text-black'} {damageFactor ===
-							4 && 'bg-red-800'} {damageFactor === 0.5 && 'bg-green-500 text-black'} {damageFactor === 0.25 &&
-							'bg-green-800'} {damageFactor === 0 && 'bg-black'} grid h-8 w-8 place-items-center rounded-full text-white"
-					>
-						{#if damageFactor === 0}
-							0×
-						{:else if damageFactor === 0.25}
-							¼×
-						{:else if damageFactor === 0.5}
-							½×
-						{:else if damageFactor === 1}
-							1×
-						{:else if damageFactor === 2}
-							2×
-						{:else if damageFactor === 4}
-							4×
-						{/if}
-					</div> -->
+						{/each}
+					{/if}
+				</div>
+			{:else}
+				<div class="grid grid-cols-2">
+					{#each Object.entries(effs) as [subTitle, subEffs]}
+						<div class="grid grid-rows-[2ch_auto] items-start gap-2">
+							<div class="font-bold">{'doubleRes' in effs ? resMap[subTitle] : weakMap[subTitle]}</div>
+							<div class="flex flex-wrap gap-4">
+								{#if subEffs.length === 0}
+									<TypeBadge variant="minimal" />
+								{:else}
+									{#each subEffs as typeName}
+										<TypeBadge
+											type={getType(typeName)}
+											variant="minimal"
+										/>
+									{/each}
+								{/if}
+							</div>
 						</div>
 					{/each}
-				{/if}
-			</div>
+				</div>
+			{/if}
 		</div>
 		<hr />
 	{/each}

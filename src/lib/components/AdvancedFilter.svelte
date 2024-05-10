@@ -7,7 +7,7 @@
 
 	import { createEventDispatcher } from 'svelte';
 
-	export let allTypesNames: Array<string>;
+	export let allTypes: PokemonType[];
 
 	export let selectedTypes: string[];
 	export let radioValue: string;
@@ -60,11 +60,11 @@
 			dispatch('filter');
 		}}
 	>
-		{#each allTypesNames as type}
-			<ToggleGroup.Item value={type}>
+		{#each allTypes as type}
+			<ToggleGroup.Item value={type.name}>
 				<TypeBadge
 					{type}
-					variant={selectedTypes.includes(type) ? 'default' : 'minimal'}
+					variant={selectedTypes.includes(type.name) ? 'default' : 'minimal'}
 				/>
 			</ToggleGroup.Item>
 		{/each}

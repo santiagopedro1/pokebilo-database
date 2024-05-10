@@ -27,19 +27,14 @@
 	};
 </script>
 
-<div class="grid grid-cols-6 place-items-center gap-4">
+<div class="grid grid-cols-[max-content_3ch_auto] place-items-center gap-4">
 	{#each keys as key}
-		<div class="flex flex-col items-center">
-			<Slider
-				value={[stats[key]]}
-				max={255}
-				orientation="vertical"
-				class="h-32"
-			/>
-			<div class="mt-2 grid grid-rows-2 text-center">
-				<div class="font-extrabold">{statNameMap[key]}</div>
-				<div>{stats[key]}</div>
-			</div>
-		</div>
+		<div class="justify-self-end font-extrabold">{statNameMap[key]}</div>
+		<div>{stats[key]}</div>
+		<Slider
+			value={[stats[key]]}
+			max={255}
+			disabled
+		/>
 	{/each}
 </div>

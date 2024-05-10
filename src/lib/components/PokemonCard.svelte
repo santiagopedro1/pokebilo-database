@@ -2,10 +2,15 @@
 	import TypeBadge from './TypeBadge.svelte';
 	import * as Card from '$lib/components/ui/card';
 
-	export let name: string;
-	export let pokedexNumber: number;
-	export let typing: Array<string>;
-	export let image: string;
+	export let pokemon: {
+		name: string;
+		pokedexNumber: number;
+		images: {
+			default: string;
+		};
+	};
+	export let type1: PokemonType;
+	export let type2: PokemonType | null;
 
 	const typeBorders: { [key: string]: string[] } = {
 		normal: ['border-l-types-normal border-t-types-normal', 'border-r-types-normal border-b-types-normal'],
@@ -29,28 +34,31 @@
 	};
 </script>
 
-<a href={name}>
+<a href={pokemon.name}>
 	<Card.Root
-		class="group border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {typing.length > 1
-			? `${typeBorders[typing[0]][0]} ${typeBorders[typing[1]][1]}`
-			: `${typeBorders[typing[0]][0]} ${typeBorders[typing[0]][1]}`}"
+		class="group border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {type1 && type2
+			? `${typeBorders[type1.name][0]} ${typeBorders[type2.name][1]}`
+			: `${typeBorders[type1.name][0]} ${typeBorders[type1.name][1]}`}"
 	>
 		<Card.Header>
 			<img
-				src={image}
+				src={pokemon.images.default}
 				alt="Imagem foda"
 				class="w-72 object-cover transition-transform group-hover:scale-[1.2]"
 				loading="lazy"
 			/>
 		</Card.Header>
 		<div class="flex w-full items-center justify-center gap-4">
-			{#each typing as type}
-				<TypeBadge {type} />
-			{/each}
+			{#if type1 && type2}
+				<TypeBadge type={type1} />
+				<TypeBadge type={type2} />
+			{:else}
+				<TypeBadge type={type1} />
+			{/if}
 		</div>
 		<Card.Content>
-			<Card.Title class="text-xl capitalize">{name}</Card.Title>
-			<Card.Description>#{pokedexNumber.toString().padStart(4, '0')}</Card.Description>
+			<Card.Title class="text-xl capitalize">{pokemon.name}</Card.Title>
+			<Card.Description>#{pokemon.pokedexNumber.toString().padStart(4, '0')}</Card.Description>
 		</Card.Content>
 	</Card.Root>
 </a>

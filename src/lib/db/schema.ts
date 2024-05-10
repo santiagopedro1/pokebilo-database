@@ -1,20 +1,27 @@
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 
 export const pokemonTypeSchema = sqliteTable('pokemonTypes', {
-	typeId: integer('id').primaryKey(),
-	typeName: text('name').notNull(),
-	typeEfficaciesAgainstThisType: text('type_efficacies_against_this_type', { mode: 'json' })
-		.$type<
-			Array<{
-				damageTypeId: number;
-				damageFactor: number;
-			}>
-		>()
+	id: integer('id').primaryKey(),
+	name: text('name').notNull(),
+	icon: text('icon').notNull(),
+	damageRelations: text('damageRelations', { mode: 'json' })
+		.$type<{
+			offensive: {
+				halfDamageTo: Array<number>;
+				doubleDamageTo: Array<number>;
+				noDamageTo: Array<number>;
+			};
+			defensive: {
+				resists: Array<number>;
+				weak: Array<number>;
+				immune: Array<number>;
+			};
+		}>()
 		.notNull()
 });
 
 export const pokemonSchema = sqliteTable('pokemon', {
-	pokedexNumber: integer('pokedex_number').primaryKey(),
+	pokedexNumber: integer('pokedexNumber').primaryKey(),
 	name: text('name').notNull(),
 	genus: text('genus').notNull(),
 	stats: text('stats', { mode: 'json' })
@@ -27,7 +34,10 @@ export const pokemonSchema = sqliteTable('pokemon', {
 			speed: number;
 		}>()
 		.notNull(),
-	typing: text('typing', { mode: 'json' }).$type<[number] | [number, number]>().notNull(),
+	type1: integer('type1')
+		.references(() => pokemonTypeSchema.id)
+		.notNull(),
+	type2: integer('type2').references(() => pokemonTypeSchema.id),
 	images: text('images', { mode: 'json' })
 		.$type<{
 			default: string;
