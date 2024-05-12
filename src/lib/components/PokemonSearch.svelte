@@ -1,8 +1,5 @@
 <script lang="ts">
 	import { Input } from '$lib/components/ui/input';
-	import * as Tooltip from '$lib/components/ui/tooltip';
-
-	import { Info } from 'lucide-svelte';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -16,15 +13,8 @@
 	<Input
 		id="search"
 		class="max-w-80"
+		placeholder="Name or Pokédex number"
 		bind:value={searchQuery}
 		on:input={() => dispatch('search')}
 	/>
-	<Tooltip.Root>
-		<Tooltip.Trigger class="cursor-help">
-			<Info class="size-6" />
-		</Tooltip.Trigger>
-		<Tooltip.Content>
-			<p>Search pokémon by its name or pokédex number</p>
-		</Tooltip.Content>
-	</Tooltip.Root>
 </div>
