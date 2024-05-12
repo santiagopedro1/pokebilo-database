@@ -1,40 +1,17 @@
 <script lang="ts">
 	import { Slider } from './ui/slider/';
-	export let stats: {
-		hp: number;
-		attack: number;
-		defense: number;
-		specialAttack: number;
-		specialDefense: number;
-		speed: number;
-	};
-
-	const keys: ['hp', 'attack', 'defense', 'specialAttack', 'specialDefense', 'speed'] = [
-		'hp',
-		'attack',
-		'defense',
-		'specialAttack',
-		'specialDefense',
-		'speed'
-	];
-	const statNameMap = {
-		hp: 'HP',
-		attack: 'Attack',
-		defense: 'Defense',
-		specialAttack: 'Sp. Atk',
-		specialDefense: 'Sp. Def',
-		speed: 'Speed'
-	};
+	export let stats: Array<Pokemon['stats'][number]>;
 </script>
 
 <div class="grid grid-cols-[max-content_3ch_auto] place-items-center gap-4">
-	{#each keys as key}
-		<div class="justify-self-end font-extrabold">{statNameMap[key]}</div>
-		<div>{stats[key]}</div>
+	{#each stats as { name, baseStat, evYield }}
+		<div class="justify-self-end font-extrabold">{name}</div>
+		<div>{baseStat}</div>
 		<Slider
-			value={[stats[key]]}
+			value={[baseStat]}
 			max={255}
 			disabled
+			{evYield}
 		/>
 	{/each}
 </div>

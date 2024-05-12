@@ -2,17 +2,12 @@
 	import TypeBadge from './TypeBadge.svelte';
 	import * as Card from '$lib/components/ui/card';
 
-	export let pokemon: {
-		name: string;
-		pokedexNumber: number;
-		images: {
-			default: string;
-		};
-	};
-	export let type1: PokemonType;
-	export let type2: PokemonType | null;
+	export let pokemon: PokemonSpeciesData;
 
-	const typeBorders: { [key: string]: string[] } = {
+	const type1 = { name: pokemon.type1.name, icon: pokemon.type1.icon };
+	const type2 = pokemon.type2 && { name: pokemon.type2.name, icon: pokemon.type2.icon };
+
+	const typeBorders: { [key: string]: Array<string> } = {
 		normal: ['border-l-types-normal border-t-types-normal', 'border-r-types-normal border-b-types-normal'],
 		fire: ['border-l-types-fire border-t-types-fire', 'border-r-types-fire border-b-types-fire'],
 		water: ['border-l-types-water border-t-types-water', 'border-r-types-water border-b-types-water'],
@@ -36,24 +31,22 @@
 
 <a href={pokemon.name}>
 	<Card.Root
-		class="group border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {type1 && type2
-			? `${typeBorders[type1.name][0]} ${typeBorders[type2.name][1]}`
-			: `${typeBorders[type1.name][0]} ${typeBorders[type1.name][1]}`}"
+		class="group border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {pokemon.type2
+			? `${typeBorders[pokemon.type1.name][0]} ${typeBorders[pokemon.type2.name][1]}`
+			: `${typeBorders[pokemon.type1.name][0]} ${typeBorders[pokemon.type1.name][1]}`}"
 	>
 		<Card.Header>
 			<img
-				src={pokemon.images.default}
+				src={pokemon.defaultImage}
 				alt="Imagem foda"
 				class="w-72 object-cover transition-transform group-hover:scale-[1.2]"
 				loading="lazy"
 			/>
 		</Card.Header>
 		<div class="flex w-full items-center justify-center gap-4">
-			{#if type1 && type2}
-				<TypeBadge type={type1} />
+			<TypeBadge type={type1} />
+			{#if type2}
 				<TypeBadge type={type2} />
-			{:else}
-				<TypeBadge type={type1} />
 			{/if}
 		</div>
 		<Card.Content>

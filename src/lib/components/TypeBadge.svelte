@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let type: TypeBasicInfo | undefined = undefined;
+	export let type: { name: string; icon: string } | undefined = undefined;
 	export let variant: 'minimal' | 'default' | 'lg' = 'default';
 
 	const typeBgColor: { [key: string]: string } = {

@@ -4,11 +4,16 @@
 
 	import { Toggle } from '$lib/components/ui/toggle/';
 
-	export let pokemon: CompletePokemonInfo;
-
-	const { pokedexNumber, name, type1, type2, images, genus } = pokemon;
+	export let pokedexNumber: number;
+	export let name: string;
+	export let type1: { name: string; icon: string };
+	export let type2: { name: string; icon: string } | null;
+	export let images;
+	export let category: string;
 
 	let shiny = false;
+
+	$: shiny = images.shiny && shiny;
 </script>
 
 <div class="grid w-full grid-cols-2 place-items-center gap-8">
@@ -30,21 +35,23 @@
 			{/if}
 		</div>
 	</div>
-	<div class="grid w-max place-items-center gap-4 justify-self-start">
-		<div class="grid items-center">
-			<h1 class="text-6xl font-extrabold uppercase">{name}</h1>
+	<div class="grid place-items-center gap-4 justify-self-center">
+		<div class="grid items-center gap-2">
+			<h1 class="text-wrap text-center text-6xl font-extrabold uppercase">{name}</h1>
 			<span class="text-center text-gray-400">#{pokedexNumber.toString().padStart(4, '0')}</span>
 		</div>
-		<h2 class="text-2xl">The {genus}</h2>
-		<Toggle
-			aria-label="Toggle between shiny and default image"
-			bind:pressed={shiny}
-			size="lg"
-			class="group"
-		>
-			<Sparkles
-				class="h-14 w-11 text-white group-hover:fill-yellow-500 group-hover:text-yellow-500 {shiny && 'fill-yellow-500 text-yellow-500'}"
-			/>
-		</Toggle>
+		<h2 class="text-2xl">The {category}</h2>
+		{#if images.shiny}
+			<Toggle
+				aria-label="Toggle between shiny and default image"
+				bind:pressed={shiny}
+				size="lg"
+				class="group"
+			>
+				<Sparkles
+					class="h-14 w-11 text-white group-hover:fill-yellow-500 group-hover:text-yellow-500 {shiny && 'fill-yellow-500 text-yellow-500'}"
+				/>
+			</Toggle>
+		{/if}
 	</div>
 </div>

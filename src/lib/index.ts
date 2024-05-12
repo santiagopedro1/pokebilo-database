@@ -1,41 +1,101 @@
-import { db, pokemonSchema, pokemonTypeSchema } from '$lib/db';
+import { db, pokemon, pokemonSpecies, pokemonType } from '$lib/db';
 
 import Pokedex from 'pokedex-promise-v2';
-import { eq, type InferSelectModel } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
-export const getAllPokemon = async () => {
-	const pokemon = await db.select().from(pokemonSchema);
-	return pokemon;
+export const getPokemonSpeciesList = async () => {
+	const result: Array<{
+		pokedexNumber: number;
+		name: string;
+		defaultImage: string;
+		type1_id: number;
+		type1_name: string;
+		type1_icon: string;
+		type2_id: number | null;
+		type2_name: string | null;
+		type2_icon: string | null;
+	}> = db.all(sql`
+	SELECT
+		ps.pokedexNumber,
+		ps.name,
+		p.defaultImage,
+		pt1.id AS type1_id,
+		pt1.name AS type1_name,
+		pt1.icon AS type1_icon,
+		pt2.id AS type2_id,
+		pt2.name AS type2_name,
+		pt2.icon AS type2_icon
+  FROM
+		pokemon AS p
+		JOIN pokemonSpecies AS ps ON p.speciesId = ps.pokedexNumber
+		LEFT JOIN pokemonType AS pt1 ON p.type1 = pt1.id
+		LEFT JOIN pokemonType AS pt2 ON p.type2 = pt2.id
+  WHERE
+		p.isDefault = 1;
+		`);
+
+	// for every pokemon, take out the type1 and type2 and put them in their own object
+	const pokemonList = await Promise.all(
+		result.map(async (p) => {
+			const type1 = { id: p.type1_id, name: p.type1_name, icon: p.type1_icon };
+			const type2 = p.type2_id ? { id: p.type2_id!, name: p.type2_name!, icon: p.type2_icon! } : null;
+
+			return {
+				pokedexNumber: p.pokedexNumber,
+				name: p.name,
+				defaultImage: p.defaultImage,
+				type1,
+				type2
+			};
+		})
+	);
+
+	return pokemonList;
 };
 
-export const getPokemonByName = async (searchParam: string) => {
-	const pokemon = await db.select().from(pokemonSchema).where(eq(pokemonSchema.name, searchParam));
-	const types = await db.select().from(pokemonTypeSchema);
+export const getPokemonByName = async (name: string) => {
+	const species = await db
+		.select({ pokedexNumber: pokemonSpecies.pokedexNumber, category: pokemonSpecies.category })
+		.from(pokemonSpecies)
+		.where(eq(pokemonSpecies.name, name));
 
-	if (pokemon.length === 0) {
-		return null;
-	}
+	const allPokemon = await db
+		.select({
+			displayName: pokemon.displayName,
+			formName: pokemon.formName,
+			isDefault: pokemon.isDefault,
+			isMega: pokemon.isMega,
+			type1: pokemon.type1,
+			type2: pokemon.type2,
+			stats: pokemon.stats,
+			defaultImage: pokemon.defaultImage,
+			shinyImage: pokemon.shinyImage
+		})
+		.from(pokemon)
+		.where(eq(pokemon.speciesId, species[0].pokedexNumber));
 
-	const type1 = types.find((type) => type.id === pokemon[0].type1);
-	const type2 = types.find((type) => type.id === pokemon[0].type2) || null;
+	const pokemonWithTypes = await Promise.all(
+		allPokemon.map(async (p) => {
+			const type1 = await db.select().from(pokemonType).where(eq(pokemonType.id, p.type1));
+			const type2 = p.type2 ? await db.select().from(pokemonType).where(eq(pokemonType.id, p.type2)) : null;
+
+			return {
+				...p,
+				type1: type1[0],
+				type2: type2 ? type2[0] : null
+			};
+		})
+	);
 
 	return {
-		...pokemon[0],
-		type1: type1!,
-		type2: type2
+		species: species[0],
+		pokemon: pokemonWithTypes
 	};
 };
 
-export const getAllTypes = async () => {
-	const allTypes = await db.select().from(pokemonTypeSchema);
-	return allTypes;
-};
-
-export const getAllTypesBasicInfo = async () => {
-	const allTypes = await db
-		.select({ id: pokemonTypeSchema.id, name: pokemonTypeSchema.name, icon: pokemonTypeSchema.icon })
-		.from(pokemonTypeSchema);
-	return allTypes;
+export const getTypeList = async () => {
+	const types = await db.select({ id: pokemonType.id, name: pokemonType.name, icon: pokemonType.icon }).from(pokemonType);
+	return types;
 };
 
 async function fetchImageAndConvertToBase64(url: string) {
@@ -58,49 +118,65 @@ function arrayBufferToBase64(buffer: ArrayBuffer) {
 	return btoa(binary);
 }
 
-// add Pokémon to the database
 export const populateDatabasePokemon = async () => {
 	const P = new Pokedex();
 
 	const maxPokemon = 151;
 
-	const pokemon: Array<InferSelectModel<typeof pokemonSchema>> = [];
-
 	for (let i = 1; i <= maxPokemon; i++) {
-		const pokebilo = await P.getPokemonByName(i);
-		const pokebiloSpecies = await P.getPokemonSpeciesByName(i);
-
-		const name = pokebilo.name;
-		const pokedexNumber = pokebilo.id;
-		const genus = pokebiloSpecies.genera.find((genus) => genus.language.name === 'en')!.genus;
-		const stats = {
-			hp: pokebilo.stats[0].base_stat,
-			attack: pokebilo.stats[1].base_stat,
-			defense: pokebilo.stats[2].base_stat,
-			specialAttack: pokebilo.stats[3].base_stat,
-			specialDefense: pokebilo.stats[4].base_stat,
-			speed: pokebilo.stats[5].base_stat
-		};
-		const typing = {
-			type1: parseInt(pokebilo.types[0].type.url.split('/').slice(-2)[0]),
-			type2: pokebilo.types[1] ? parseInt(pokebilo.types[1].type.url.split('/').slice(-2)[0]) : null
-		};
-		const images = {
-			default: await fetchImageAndConvertToBase64(pokebilo.sprites.other['official-artwork'].front_default || ''),
-			shiny: await fetchImageAndConvertToBase64(pokebilo.sprites.other['official-artwork'].front_shiny || '')
-		};
-
-		pokemon.push({
-			pokedexNumber,
-			name,
-			genus,
-			stats,
-			...typing,
-			images
+		const species = await P.getPokemonSpeciesByName(i);
+		await db.insert(pokemonSpecies).values({
+			pokedexNumber: i,
+			name: species.name,
+			category: species.genera.find((g) => g.language.name === 'en')?.genus || ''
 		});
-	}
 
-	await db.insert(pokemonSchema).values(pokemon);
+		for (const item of species.varieties) {
+			const pokemonF = await P.getPokemonByName(item.pokemon.name);
+			const form = await P.getPokemonFormByName(item.pokemon.name);
+
+			const id = form.id;
+			const speciesId = i;
+			const displayName = !item.is_default ? form.names.find((n) => n.language.name === 'en')?.name.toLowerCase() || '' : species.name;
+			const formName = !item.is_default ? form.form_names.find((n) => n.language.name === 'en')?.name.toLowerCase() || '' : species.name;
+			const isDefault = item.is_default;
+			const isMega = form.is_mega;
+			const type1 = parseInt(pokemonF.types[0].type.url.split('/').slice(-2)[0]);
+			const type2 = pokemonF.types[1] ? parseInt(pokemonF.types[1].type.url.split('/').slice(-2)[0]) : null;
+			const stats = [
+				{ name: 'HP', baseStat: pokemonF.stats[0].base_stat, evYield: pokemonF.stats[0].effort },
+				{ name: 'Attack', baseStat: pokemonF.stats[1].base_stat, evYield: pokemonF.stats[1].effort },
+				{ name: 'Defense', baseStat: pokemonF.stats[2].base_stat, evYield: pokemonF.stats[2].effort },
+				{ name: 'Sp. Attack', baseStat: pokemonF.stats[3].base_stat, evYield: pokemonF.stats[3].effort },
+				{ name: 'Sp. Defense', baseStat: pokemonF.stats[4].base_stat, evYield: pokemonF.stats[4].effort },
+				{ name: 'Speed', baseStat: pokemonF.stats[5].base_stat, evYield: pokemonF.stats[5].effort }
+			];
+			const defaultImage = pokemonF.sprites.other['official-artwork'].front_default
+				? await fetchImageAndConvertToBase64(pokemonF.sprites.other['official-artwork'].front_default)
+				: '';
+			const shinyImage = pokemonF.sprites.other['official-artwork'].front_shiny
+				? await fetchImageAndConvertToBase64(pokemonF.sprites.other['official-artwork'].front_shiny)
+				: '';
+
+			try {
+				await db.insert(pokemon).values({
+					id,
+					speciesId,
+					displayName,
+					formName,
+					isDefault,
+					isMega,
+					type1,
+					type2,
+					stats,
+					defaultImage,
+					shinyImage
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	}
 };
 
 const urls = [
@@ -161,5 +237,5 @@ export const populateDatabaseTypes = async () => {
 			return { ...type, icon: b };
 		})
 	);
-	await db.insert(pokemonTypeSchema).values(typesWithBase64);
+	await db.insert(pokemonType).values(typesWithBase64);
 };

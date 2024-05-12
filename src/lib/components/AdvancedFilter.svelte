@@ -7,10 +7,10 @@
 
 	import { createEventDispatcher } from 'svelte';
 
-	export let allTypes: PokemonType[];
+	export let pokemonTypeList: Array<BasicPokemonTypeData>;
 
-	export let selectedTypes: string[];
-	export let radioValue: string;
+	export let selectedTypes: Array<string>;
+	export let radioValue: string = 'and';
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -60,7 +60,7 @@
 			dispatch('filter');
 		}}
 	>
-		{#each allTypes as type}
+		{#each pokemonTypeList as type}
 			<ToggleGroup.Item value={type.name}>
 				<TypeBadge
 					{type}

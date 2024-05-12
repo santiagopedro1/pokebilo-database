@@ -1,6 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
-import { pokemonSchema, pokemonTypeSchema } from '$lib/db';
+import { pokemon, pokemonSpecies, pokemonType } from '$lib/db';
 import { InferSelectModel } from 'drizzle-orm';
 
 declare global {
@@ -12,27 +12,22 @@ declare global {
 		// interface Platform {}
 	}
 
-	interface BasicPokemonInfo {
-		pokedexNumber: number;
-		name: string;
-		type1: number;
-		type2: number | null;
-		image: string;
-	}
+	type PokemonSpecies = InferSelectModel<typeof pokemonSpecies>;
+	type Pokemon = InferSelectModel<typeof pokemon>;
+	type PokemonType = InferSelectModel<typeof pokemonType>;
 
-	interface CompletePokemonInfo extends Pokemon {
+	type PokemonSpeciesData = Omit<PokemonSpecies, 'category'> & {
+		defaultImage: string;
+		type1: BasicPokemonTypeData;
+		type2: BasicPokemonTypeData | null;
+	};
+
+	type CompletePokemonData = Omit<Pokemon, 'type1' | 'type2'> & {
 		type1: PokemonType;
 		type2: PokemonType | null;
-	}
+	};
 
-	interface TypeBasicInfo {
-		id: number;
-		name: string;
-		icon: string;
-	}
-
-	type Pokemon = InferSelectModel<typeof pokemonSchema>;
-	type PokemonType = InferSelectModel<typeof pokemonTypeSchema>;
+	type BasicPokemonTypeData = Omit<PokemonType, 'damageRelations'>;
 }
 
 export {};

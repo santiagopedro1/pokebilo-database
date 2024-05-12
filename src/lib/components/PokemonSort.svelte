@@ -1,7 +1,9 @@
 <script lang="ts">
 	import * as Select from '$lib/components/ui/select';
 
-	import type { Selected } from 'bits-ui';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	const orderValues = [
 		{ value: 'numAsc', label: 'Pokedex Number (Asc)' },
@@ -10,26 +12,7 @@
 		{ value: 'nameDesc', label: 'Name (Desc)' }
 	];
 
-	export let pokemonList: Array<Pokemon>;
-
-	const sortPokemon = (order: Selected<string> | undefined) => {
-		if (!order) return;
-		const { value } = order;
-		switch (value) {
-			case 'numAsc':
-				pokemonList = pokemonList.sort((a, b) => a.pokedexNumber - b.pokedexNumber);
-				return;
-			case 'numDesc':
-				pokemonList = pokemonList.sort((a, b) => b.pokedexNumber - a.pokedexNumber);
-				return;
-			case 'nameAsc':
-				pokemonList = pokemonList.sort((a, b) => a.name.localeCompare(b.name));
-				return;
-			case 'nameDesc':
-				pokemonList = pokemonList.sort((a, b) => b.name.localeCompare(a.name));
-				return;
-		}
-	};
+	export let sortOrder: string;
 </script>
 
 <div class="flex w-full items-center justify-center gap-2">
@@ -37,7 +20,10 @@
 	<Select.Root
 		items={orderValues}
 		selected={orderValues[0]}
-		onSelectedChange={sortPokemon}
+		onSelectedChange={(v) => {
+			if (v) sortOrder = v.value;
+			dispatch('sort');
+		}}
 	>
 		<Select.Trigger class="max-w-80">
 			<Select.Value placeholder="Order by" />

@@ -1,6 +1,6 @@
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 
-export const pokemonTypeSchema = sqliteTable('pokemonTypes', {
+export const pokemonType = sqliteTable('pokemonType', {
 	id: integer('id').primaryKey(),
 	name: text('name').notNull(),
 	icon: text('icon').notNull(),
@@ -20,28 +20,34 @@ export const pokemonTypeSchema = sqliteTable('pokemonTypes', {
 		.notNull()
 });
 
-export const pokemonSchema = sqliteTable('pokemon', {
+export const pokemonSpecies = sqliteTable('pokemonSpecies', {
 	pokedexNumber: integer('pokedexNumber').primaryKey(),
 	name: text('name').notNull(),
-	genus: text('genus').notNull(),
-	stats: text('stats', { mode: 'json' })
-		.$type<{
-			hp: number;
-			attack: number;
-			defense: number;
-			specialAttack: number;
-			specialDefense: number;
-			speed: number;
-		}>()
+	category: text('category').notNull()
+});
+
+export const pokemon = sqliteTable('pokemon', {
+	id: integer('id').primaryKey(),
+	speciesId: integer('speciesId')
+		.references(() => pokemonSpecies.pokedexNumber)
 		.notNull(),
+	displayName: text('displayName').notNull(),
+	formName: text('formName').notNull(),
+	isDefault: integer('isDefault', { mode: 'boolean' }).notNull(),
+	isMega: integer('isMega', { mode: 'boolean' }).notNull(),
 	type1: integer('type1')
-		.references(() => pokemonTypeSchema.id)
+		.references(() => pokemonType.id)
 		.notNull(),
-	type2: integer('type2').references(() => pokemonTypeSchema.id),
-	images: text('images', { mode: 'json' })
-		.$type<{
-			default: string;
-			shiny: string;
-		}>()
-		.notNull()
+	type2: integer('type2').references(() => pokemonType.id),
+	stats: text('stats', { mode: 'json' })
+		.$type<
+			Array<{
+				name: string;
+				baseStat: number;
+				evYield: number;
+			}>
+		>()
+		.notNull(),
+	defaultImage: text('defaultImage').notNull(),
+	shinyImage: text('shinyImage').notNull()
 });

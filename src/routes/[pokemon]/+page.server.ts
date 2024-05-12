@@ -2,14 +2,14 @@ import type { PageServerLoad } from './$types';
 
 import { error } from '@sveltejs/kit';
 
-import { getPokemonByName, getAllTypesBasicInfo } from '$lib';
+import { getPokemonByName, getTypeList } from '$lib';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const pokemon = await getPokemonByName(params.pokemon);
-	const allTypesBasicInfo = await getAllTypesBasicInfo();
-	if (!pokemon) {
+	const { species, pokemon } = await getPokemonByName(params.pokemon);
+	const typeList = await getTypeList();
+	if (!pokemon || !species) {
 		return error(404, { message: 'Pokemon not found' });
 	} else {
-		return { pokemon, allTypesBasicInfo };
+		return { species, pokemon, typeList };
 	}
 };

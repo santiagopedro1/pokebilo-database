@@ -8,15 +8,16 @@
 
 	export let data: PageServerData;
 
-	let { allPokemon, allTypes } = data;
+	let { pokemonSpeciesList, pokemonTypeList } = data;
 
-	let pokemonList = allPokemon;
+	let pokemonList = pokemonSpeciesList;
 	let searchQuery = ''; // State variable to store the search query
 	let selectedTypes: Array<string> = []; // State variable to store the selected types for filtering
 	let radioValue = 'and'; // State variable to store the selected radio value for filtering
+	let sortOrder = 'numAsc'; // State variable to store the selected sort order
 
 	function updatePokemonList() {
-		pokemonList = allPokemon.filter((pokemon) => {
+		pokemonList = pokemonSpeciesList.filter((pokemon) => {
 			const matchesSearch =
 				searchQuery === '' ||
 				pokemon.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -25,44 +26,49 @@
 			const matchesFilter =
 				selectedTypes.length === 0 ||
 				(radioValue === 'and'
-					? selectedTypes.every((type) => findType(pokemon.type1).name === type || (pokemon.type2 && findType(pokemon.type2).name === type))
-					: selectedTypes.some(
-							(type) => findType(pokemon.type1).name === type || (pokemon.type2 && findType(pokemon.type2).name === type)
-						));
+					? selectedTypes.every((type) => pokemon.type1.name === type || (pokemon.type2 && pokemon.type2.name === type))
+					: selectedTypes.some((type) => pokemon.type1.name === type || (pokemon.type2 && pokemon.type2.name === type)));
 			return matchesSearch && matchesFilter;
 		});
-	}
-
-	function findType(typeId: number) {
-		const type = allTypes.find((type) => type.id === typeId);
-		if (type) return type;
-		else throw new Error('Type not found');
+		switch (sortOrder) {
+			case 'numAsc':
+				pokemonList = pokemonList.sort((a, b) => a.pokedexNumber - b.pokedexNumber);
+				return;
+			case 'numDesc':
+				pokemonList = pokemonList.sort((a, b) => b.pokedexNumber - a.pokedexNumber);
+				return;
+			case 'nameAsc':
+				pokemonList = pokemonList.sort((a, b) => a.name.localeCompare(b.name));
+				return;
+			case 'nameDesc':
+				pokemonList = pokemonList.sort((a, b) => b.name.localeCompare(a.name));
+				return;
+		}
 	}
 </script>
 
-<div class="grid grid-cols-2 place-items-center">
+<div class="flex justify-around">
 	<PokemonSearch
 		bind:searchQuery
 		on:search={updatePokemonList}
 	/>
-	<PokemonSort bind:pokemonList />
+	<PokemonSort
+		bind:sortOrder
+		on:sort={updatePokemonList}
+	/>
 </div>
 
 <AdvancedFilter
 	bind:radioValue
 	bind:selectedTypes
 	on:filter={updatePokemonList}
-	{allTypes}
+	{pokemonTypeList}
 />
 
 {#if pokemonList.length > 0}
 	<div class="grid grid-cols-3 place-items-center gap-4">
 		{#each pokemonList as pokemon}
-			<PokemonCard
-				{pokemon}
-				type1={findType(pokemon.type1)}
-				type2={(pokemon.type2 && findType(pokemon.type2)) || null}
-			/>
+			<PokemonCard {pokemon} />
 		{/each}
 	</div>
 {:else}

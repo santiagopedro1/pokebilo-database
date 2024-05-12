@@ -2,10 +2,13 @@
 	import { Slider as SliderPrimitive } from 'bits-ui';
 	import { cn } from '$lib/utils.js';
 
-	type $$Props = SliderPrimitive.Props;
+	type $$Props = SliderPrimitive.Props & {
+		evYield: number;
+	};
 
 	let className: $$Props['class'] = undefined;
 	export let value: $$Props['value'] = [0];
+	export let evYield: $$Props['evYield'] = 0;
 	export { className as class };
 </script>
 
@@ -16,7 +19,7 @@
 	let:thumbs
 >
 	<span class="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
-		<SliderPrimitive.Range class="absolute h-full bg-primary" />
+		<SliderPrimitive.Range class="absolute h-full {evYield ? 'bg-green-500' : 'bg-primary'}" />
 	</span>
 	{#each thumbs as thumb}
 		<SliderPrimitive.Thumb

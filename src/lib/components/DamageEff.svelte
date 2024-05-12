@@ -2,20 +2,20 @@
 	import TypeBadge from './TypeBadge.svelte';
 
 	export let pokemonType: [PokemonType, PokemonType | null];
-	export let allTypesBasicInfo: Array<TypeBasicInfo>;
+	export let typeList: Array<BasicPokemonTypeData>;
 
-	function calculateTypeEffectiveness(types: [PokemonType, PokemonType | null], allTypes: Array<TypeBasicInfo>) {
+	function calculateTypeEffectiveness(types: typeof pokemonType, allTypes: typeof typeList) {
 		const effectiveness = {
 			res: {
-				normal: [] as string[],
-				doubleRes: [] as string[]
+				normal: [] as typeof typeList,
+				doubleRes: [] as typeof typeList
 			},
 			weak: {
-				normal: [] as string[],
-				doubleWeak: [] as string[]
+				normal: [] as typeof typeList,
+				doubleWeak: [] as typeof typeList
 			},
-			immune: [] as string[],
-			normal: [] as string[]
+			immune: [] as typeof typeList,
+			normal: [] as typeof typeList
 		};
 
 		for (const type of allTypes) {
@@ -34,33 +34,29 @@
 			}
 			switch (mult) {
 				case 0.25:
-					effectiveness.res.doubleRes.push(type.name);
+					effectiveness.res.doubleRes.push(type);
 					break;
 				case 0.5:
-					effectiveness.res.normal.push(type.name);
+					effectiveness.res.normal.push(type);
 					break;
 				case 0:
-					effectiveness.immune.push(type.name);
+					effectiveness.immune.push(type);
 					break;
 				case 1:
-					effectiveness.normal.push(type.name);
+					effectiveness.normal.push(type);
 					break;
 				case 2:
-					effectiveness.weak.normal.push(type.name);
+					effectiveness.weak.normal.push(type);
 					break;
 				case 4:
-					effectiveness.weak.doubleWeak.push(type.name);
+					effectiveness.weak.doubleWeak.push(type);
 					break;
 			}
 		}
 		return effectiveness;
 	}
 
-	function getType(typeName: string) {
-		return allTypesBasicInfo.find((type) => type.name === typeName)!;
-	}
-
-	const pokemonTypeEff = calculateTypeEffectiveness(pokemonType, allTypesBasicInfo);
+	let pokemonTypeEff = calculateTypeEffectiveness(pokemonType, typeList);
 	const titleMap: { [key: string]: string } = {
 		res: 'Resistant to:',
 		weak: 'Weak to:',
@@ -75,6 +71,8 @@
 		normal: '2 ×',
 		doubleWeak: '4 ×'
 	};
+
+	$: pokemonTypeEff = calculateTypeEffectiveness(pokemonType, typeList);
 </script>
 
 <div class="grid gap-4">
@@ -88,7 +86,7 @@
 					{:else}
 						{#each effs as typeName}
 							<TypeBadge
-								type={getType(typeName)}
+								type={typeName}
 								variant="minimal"
 							/>
 						{/each}
@@ -103,9 +101,9 @@
 								{#if subEffs.length === 0}
 									<TypeBadge variant="minimal" />
 								{:else}
-									{#each subEffs as typeName}
+									{#each subEffs as type}
 										<TypeBadge
-											type={getType(typeName)}
+											{type}
 											variant="minimal"
 										/>
 									{/each}
@@ -119,3 +117,4 @@
 		<hr />
 	{/each}
 </div>
+BasicPokemonTypeData

@@ -3,10 +3,10 @@
 
 	export let title: string;
 	export let description: string;
-	export let headerBg: string[];
+	export let headerBg: Array<string>;
 	export let size: 'default' | 'lg' = 'default';
 
-	const typeGradient: { [key: string]: string[] } = {
+	const typeGradient: { [key: string]: Array<string> } = {
 		normal: ['from-types-normal', 'to-types-normal'],
 		fighting: ['from-types-fighting', 'to-types-fighting'],
 		flying: ['from-types-flying', 'to-types-flying'],
