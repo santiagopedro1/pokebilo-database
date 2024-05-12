@@ -15,39 +15,29 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<div class="grid place-items-center gap-4">
-	<p>Filter by Pokémon type</p>
+<div class="grid place-items-center gap-2">
+	<p class="text-lg">Filter by Pokémon type</p>
 	<RadioGroup.Root
-		class="flex gap-8 text-sm font-medium"
+		class="flex gap-8"
 		bind:value={radioValue}
 		onValueChange={(v) => {
 			if (v) radioValue = v;
 			dispatch('filter');
 		}}
 	>
-		<div class="group flex select-none items-center text-foreground transition-all">
+		<div class="group flex select-none items-center gap-2 text-foreground transition-all">
 			<RadioGroup.Item
 				id="and"
 				value="and"
 			/>
-			<Label
-				for="and"
-				class="pl-3"
-			>
-				Include all (AND)
-			</Label>
+			<Label for="and">Include all (AND)</Label>
 		</div>
-		<div class="group flex select-none items-center text-foreground transition-all">
+		<div class="group flex select-none items-center gap-2 text-foreground transition-all">
 			<RadioGroup.Item
 				id="or"
 				value="or"
 			/>
-			<Label
-				for="or"
-				class="pl-3"
-			>
-				Include any (OR)
-			</Label>
+			<Label for="or">Include any (OR)</Label>
 		</div>
 	</RadioGroup.Root>
 	<ToggleGroup.Root

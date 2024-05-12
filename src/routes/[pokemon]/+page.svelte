@@ -3,6 +3,7 @@
 	import PokemonHero from '$lib/components/PokemonHero.svelte';
 	import PokemonSectionCard from '$lib/components/PokemonSectionCard.svelte';
 	import PokemonStats from '$lib/components/PokemonStats.svelte';
+	import { Label } from '$lib/components/ui/label/';
 
 	import * as Select from '$lib/components/ui/select';
 
@@ -22,7 +23,8 @@
 	let currentForm = pokemon[0];
 </script>
 
-<div class="grid place-items-center">
+<div class="flex items-center justify-center gap-4">
+	<Label class="text-2xl font-bold">Varieties</Label>
 	<Select.Root
 		items={forms}
 		selected={forms[0]}
@@ -33,10 +35,10 @@
 			}
 		}}
 	>
-		<Select.Trigger class="w-1/2 text-lg capitalize">
+		<Select.Trigger class="w-96 text-lg capitalize">
 			<Select.Value placeholder="Theme" />
 		</Select.Trigger>
-		<Select.Content class="max-h-56 overflow-y-scroll">
+		<Select.Content class="max-h-56 overflow-y-auto">
 			{#each forms as form}
 				<Select.Item
 					value={form.value}

@@ -47,7 +47,7 @@
 	}
 </script>
 
-<div class="flex justify-around">
+<div class="flex w-full justify-between">
 	<PokemonSearch
 		bind:searchQuery
 		on:search={updatePokemonList}
@@ -72,11 +72,9 @@
 		{/each}
 	</div>
 {:else}
-	<div class="grid place-items-center space-y-4 text-3xl">
-		<p>No Pokémon found!</p>
-		<img
-			src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXkzOGIycmVrZ3Ewcm5yMjYwcmcxbmczYXNldzU0cTVyN3RxbHBheCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/12Bpme5pTzGmg8/giphy.gif"
-			alt="Sad pikachu gif"
-		/>
-	</div>
+	<p class="text-3xl">No Pokémon found!</p>
+	<img
+		src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXkzOGIycmVrZ3Ewcm5yMjYwcmcxbmczYXNldzU0cTVyN3RxbHBheCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/12Bpme5pTzGmg8/giphy.gif"
+		alt="Sad pikachu gif"
+	/>
 {/if}

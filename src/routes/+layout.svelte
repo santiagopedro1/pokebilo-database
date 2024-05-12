@@ -2,7 +2,7 @@
 	import '../app.pcss';
 </script>
 
-<div class="bg-green-500 p-2">
+<div class="grid place-items-center bg-green-500 p-2">
 	<header class="flex items-center justify-center">
 		<a href="/">
 			<img

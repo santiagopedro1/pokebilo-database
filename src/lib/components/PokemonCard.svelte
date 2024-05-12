@@ -4,9 +4,6 @@
 
 	export let pokemon: PokemonSpeciesData;
 
-	const type1 = { name: pokemon.type1.name, icon: pokemon.type1.icon };
-	const type2 = pokemon.type2 && { name: pokemon.type2.name, icon: pokemon.type2.icon };
-
 	const typeBorders: { [key: string]: Array<string> } = {
 		normal: ['border-l-types-normal border-t-types-normal', 'border-r-types-normal border-b-types-normal'],
 		fire: ['border-l-types-fire border-t-types-fire', 'border-r-types-fire border-b-types-fire'],
@@ -31,7 +28,7 @@
 
 <a href={pokemon.name}>
 	<Card.Root
-		class="group border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {pokemon.type2
+		class="group grid place-items-center border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all hover:ring-1 {pokemon.type2
 			? `${typeBorders[pokemon.type1.name][0]} ${typeBorders[pokemon.type2.name][1]}`
 			: `${typeBorders[pokemon.type1.name][0]} ${typeBorders[pokemon.type1.name][1]}`}"
 	>
@@ -40,18 +37,17 @@
 				src={pokemon.defaultImage}
 				alt="Imagem foda"
 				class="w-72 object-cover transition-transform group-hover:scale-[1.2]"
-				loading="lazy"
 			/>
 		</Card.Header>
 		<div class="flex w-full items-center justify-center gap-4">
-			<TypeBadge type={type1} />
-			{#if type2}
-				<TypeBadge type={type2} />
+			<TypeBadge type={pokemon.type1} />
+			{#if pokemon.type2}
+				<TypeBadge type={pokemon.type2} />
 			{/if}
 		</div>
 		<Card.Content>
 			<Card.Title class="text-xl capitalize">{pokemon.name}</Card.Title>
-			<Card.Description>#{pokemon.pokedexNumber.toString().padStart(4, '0')}</Card.Description>
+			<Card.Description class="italic">#{pokemon.pokedexNumber.toString().padStart(4, '0')}</Card.Description>
 		</Card.Content>
 	</Card.Root>
 </a>

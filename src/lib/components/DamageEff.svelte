@@ -117,4 +117,3 @@
 		<hr />
 	{/each}
 </div>
-BasicPokemonTypeData
