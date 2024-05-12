@@ -75,9 +75,9 @@
 	$: pokemonTypeEff = calculateTypeEffectiveness(pokemonType, typeList);
 </script>
 
-<div class="grid gap-4">
+<div class="grid divide-y">
 	{#each Object.entries(pokemonTypeEff) as [title, effs]}
-		<div class="grid grid-cols-[250px_1fr] gap-8">
+		<div class="grid grid-cols-[250px_1fr] gap-8 py-4">
 			<div class="self-center justify-self-end text-xl font-bold">{titleMap[title]}</div>
 			{#if Array.isArray(effs)}
 				<div class="flex flex-wrap gap-4">
@@ -114,6 +114,5 @@
 				</div>
 			{/if}
 		</div>
-		<hr />
 	{/each}
 </div>

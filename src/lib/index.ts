@@ -123,15 +123,27 @@ export const populateDatabasePokemon = async () => {
 
 	const maxPokemon = 151;
 
+	await db.delete(pokemon);
+	await db.delete(pokemonSpecies);
+
 	for (let i = 1; i <= maxPokemon; i++) {
 		const species = await P.getPokemonSpeciesByName(i);
+
 		await db.insert(pokemonSpecies).values({
 			pokedexNumber: i,
 			name: species.name,
 			category: species.genera.find((g) => g.language.name === 'en')?.genus || ''
 		});
 
+		console.log(`\n\nInserted species ${species.name}`);
+
 		for (const item of species.varieties) {
+			// skip the bullshit pikachu forms
+			if (i === 25 && item.pokemon.name !== 'pikachu' && item.pokemon.name !== 'pikachu-gmax') {
+				console.log('Skipping form', item.pokemon.name);
+				continue;
+			}
+
 			const pokemonF = await P.getPokemonByName(item.pokemon.name);
 			const form = await P.getPokemonFormByName(item.pokemon.name);
 
@@ -172,6 +184,7 @@ export const populateDatabasePokemon = async () => {
 					defaultImage,
 					shinyImage
 				});
+				console.log(`\nInserted form ${item.pokemon.name}`);
 			} catch (error) {
 				console.error(error);
 			}

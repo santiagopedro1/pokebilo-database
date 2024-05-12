@@ -44,7 +44,7 @@
 {:else if type}
 	<div
 		class="grid place-items-center rounded-lg uppercase {typeBgColor[type.name]} {variant === 'lg'
-			? 'grid-cols-[32px_1fr] text-lg'
+			? 'grid-cols-[32px_96px] text-lg'
 			: 'grid-cols-[32px_80px] text-sm'}"
 	>
 		<div class="rounded-s-lg">

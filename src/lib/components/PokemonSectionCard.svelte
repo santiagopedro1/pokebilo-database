@@ -28,7 +28,7 @@
 	};
 </script>
 
-<Card.Root class="space-y-8 text-white {size === 'lg' ? 'col-span-2' : ''}">
+<Card.Root class="space-y-8 border-none text-white {size === 'lg' ? 'col-span-2' : ''}">
 	<Card.Header
 		class="rounded-t-lg bg-gradient-to-r {headerBg.length > 1
 			? `${typeGradient[headerBg[0]][0]} ${typeGradient[headerBg[1]][1]}`
