@@ -2,18 +2,18 @@
 	import '../app.pcss';
 </script>
 
-<header class="grid place-items-center py-4">
-	<a href="/">
-		<img
-			src="/pokebiloHub.png"
-			alt=""
-			class="w-44"
-		/>
-	</a>
-</header>
-<div class="px-8">
+<div class="space-y-4 px-8 py-4">
+	<header class="grid place-items-center">
+		<a href="/">
+			<img
+				src="/pokebiloHub.png"
+				alt="Logo for pokebiloHub"
+				class="w-44"
+			/>
+		</a>
+	</header>
 	<hr class="w-full" />
 </div>
-<main class="grid place-items-center gap-8 p-4">
+<main class="grid gap-8 p-4">
 	<slot></slot>
 </main>
