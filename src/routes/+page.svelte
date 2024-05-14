@@ -3,13 +3,15 @@
 	import PokemonCard from '$lib/components/PokemonCard.svelte';
 	import PokemonSearch from '$lib/components/PokemonSearch.svelte';
 	import PokemonSort from '$lib/components/PokemonSort.svelte';
+	import { onMount } from 'svelte';
 
 	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;
 
-	let { pokemonSpeciesList, pokemonTypeList } = data;
+	const { pokemonTypeList } = data;
 
+	let pokemonSpeciesList: Array<PokemonSpeciesData> = [];
 	let pokemonList = pokemonSpeciesList;
 	let searchQuery = ''; // State variable to store the search query
 	let selectedTypes: Array<string> = []; // State variable to store the selected types for filtering
@@ -32,49 +34,68 @@
 		});
 		switch (sortOrder) {
 			case 'numAsc':
-				pokemonList = pokemonList.sort((a, b) => a.pokedexNumber - b.pokedexNumber);
+				pokemonSpeciesList = pokemonSpeciesList.sort((a, b) => a.pokedexNumber - b.pokedexNumber);
 				return;
 			case 'numDesc':
-				pokemonList = pokemonList.sort((a, b) => b.pokedexNumber - a.pokedexNumber);
+				pokemonSpeciesList = pokemonSpeciesList.sort((a, b) => b.pokedexNumber - a.pokedexNumber);
 				return;
 			case 'nameAsc':
-				pokemonList = pokemonList.sort((a, b) => a.name.localeCompare(b.name));
+				pokemonSpeciesList = pokemonSpeciesList.sort((a, b) => a.name.localeCompare(b.name));
 				return;
 			case 'nameDesc':
-				pokemonList = pokemonList.sort((a, b) => b.name.localeCompare(a.name));
+				pokemonSpeciesList = pokemonSpeciesList.sort((a, b) => b.name.localeCompare(a.name));
 				return;
 		}
 	}
+	let isLoading = true;
+
+	onMount(async () => {
+		const res = await fetch('/getPokemonList');
+		const data = await res.json();
+		pokemonSpeciesList = data;
+
+		console.log(pokemonSpeciesList);
+
+		isLoading = false;
+
+		updatePokemonList();
+	});
 </script>
 
-<div class="flex w-full justify-between">
-	<PokemonSearch
-		bind:searchQuery
-		on:search={updatePokemonList}
-	/>
-	<PokemonSort
-		bind:sortOrder
-		on:sort={updatePokemonList}
-	/>
-</div>
-
-<AdvancedFilter
-	bind:radioValue
-	bind:selectedTypes
-	on:filter={updatePokemonList}
-	{pokemonTypeList}
-/>
-
-{#if pokemonList.length > 0}
-	<div class="grid grid-cols-3 place-items-center gap-4">
-		{#each pokemonList as pokemon}
-			<PokemonCard {pokemon} />
-		{/each}
-	</div>
+{#if isLoading}
+	<p>I'm loading here</p>
 {:else}
-	<p class="text-3xl">No Pokémon found!</p>
-	<img
-		src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXkzOGIycmVrZ3Ewcm5yMjYwcmcxbmczYXNldzU0cTVyN3RxbHBheCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/12Bpme5pTzGmg8/giphy.gif"
-		alt="Sad pikachu gif"
+	<div class="flex w-full justify-between">
+		<PokemonSearch
+			bind:searchQuery
+			on:search={updatePokemonList}
+		/>
+		<PokemonSort
+			bind:sortOrder
+			on:sort={updatePokemonList}
+		/>
+	</div>
+
+	<AdvancedFilter
+		bind:radioValue
+		bind:selectedTypes
+		on:filter={updatePokemonList}
+		{pokemonTypeList}
 	/>
+
+	{#if pokemonList.length > 0}
+		<div class="grid grid-cols-3 place-items-center gap-4">
+			{#each pokemonSpeciesList as pokemon}
+				<div class={pokemonList.includes(pokemon) ? '' : 'hidden'}>
+					<PokemonCard {pokemon} />
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<p class="text-3xl">No Pokémon found!</p>
+		<img
+			src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXkzOGIycmVrZ3Ewcm5yMjYwcmcxbmczYXNldzU0cTVyN3RxbHBheCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/12Bpme5pTzGmg8/giphy.gif"
+			alt="Sad pikachu gif"
+		/>
+	{/if}
 {/if}

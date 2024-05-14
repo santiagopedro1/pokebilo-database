@@ -4,17 +4,18 @@
 </script>
 
 <ScrollArea class="h-screen w-screen">
-	<div class="grid place-items-center bg-green-500 p-2">
-		<header class="flex items-center justify-center">
+	<div class="grid place-items-center px-8">
+		<header class="grid place-items-center py-4">
 			<a href="/">
 				<img
-					src="/pokepedia.png"
+					src="/pokebiloHub.png"
 					alt=""
-					class="w-52"
+					class="w-44"
 				/>
 			</a>
 		</header>
-		<main class="min-h-screen space-y-8 rounded-lg bg-background px-8 py-4">
+		<hr class="w-full" />
+		<main class="space-y-8 rounded-lg bg-background px-4 py-4">
 			<slot></slot>
 		</main>
 	</div>

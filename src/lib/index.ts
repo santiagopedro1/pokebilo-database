@@ -1,54 +1,34 @@
 import { db, pokemon, pokemonSpecies, pokemonType } from '$lib/db';
 
 import Pokedex from 'pokedex-promise-v2';
-import { eq, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
+import { alias } from 'drizzle-orm/sqlite-core';
 
 export const getPokemonSpeciesList = async () => {
-	const result: Array<{
-		pokedexNumber: number;
-		name: string;
-		defaultImage: string;
-		type1_id: number;
-		type1_name: string;
-		type1_icon: string;
-		type2_id: number | null;
-		type2_name: string | null;
-		type2_icon: string | null;
-	}> = db.all(sql`
-	SELECT
-		ps.pokedexNumber,
-		ps.name,
-		p.defaultImage,
-		pt1.id AS type1_id,
-		pt1.name AS type1_name,
-		pt1.icon AS type1_icon,
-		pt2.id AS type2_id,
-		pt2.name AS type2_name,
-		pt2.icon AS type2_icon
-  FROM
-		pokemon AS p
-		JOIN pokemonSpecies AS ps ON p.speciesId = ps.pokedexNumber
-		LEFT JOIN pokemonType AS pt1 ON p.type1 = pt1.id
-		LEFT JOIN pokemonType AS pt2 ON p.type2 = pt2.id
-  WHERE
-		p.isDefault = 1;
-		`);
+	const pt1 = alias(pokemonType, 'pt1');
+	const pt2 = alias(pokemonType, 'pt2');
 
-	// for every pokemon, take out the type1 and type2 and put them in their own object
-	const pokemonList = await Promise.all(
-		result.map(async (p) => {
-			const type1 = { id: p.type1_id, name: p.type1_name, icon: p.type1_icon };
-			const type2 = p.type2_id ? { id: p.type2_id!, name: p.type2_name!, icon: p.type2_icon! } : null;
-
-			return {
-				pokedexNumber: p.pokedexNumber,
-				name: p.name,
-				defaultImage: p.defaultImage,
-				type1,
-				type2
-			};
+	const pokemonList = await db
+		.select({
+			pokedexNumber: pokemonSpecies.pokedexNumber,
+			name: pokemonSpecies.name,
+			defaultImage: pokemon.defaultImage,
+			type1: {
+				id: pt1.id,
+				name: pt1.name,
+				icon: pt1.icon
+			},
+			type2: {
+				id: pt2.id,
+				name: pt2.name,
+				icon: pt2.icon
+			}
 		})
-	);
+		.from(pokemonSpecies)
+		.leftJoin(pokemon, eq(pokemon.speciesId, pokemonSpecies.pokedexNumber))
+		.leftJoin(pt1, eq(pokemon.type1, pt1.id))
+		.leftJoin(pt2, eq(pokemon.type2, pt2.id))
+		.where(eq(pokemon.isDefault, true));
 
 	return pokemonList;
 };
