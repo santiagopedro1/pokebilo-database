@@ -88,7 +88,7 @@
 	/>
 
 	{#if pokemonList.length > 0}
-		<div class="grid grid-cols-3 place-items-center gap-4">
+		<div class="grid grid-cols-3 place-items-center gap-x-16 gap-y-8">
 			{#each pokemonSpeciesList as pokemon}
 				<div class={pokemonList.includes(pokemon) ? '' : 'hidden'}>
 					<PokemonCard {pokemon} />

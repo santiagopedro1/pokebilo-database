@@ -44,4 +44,18 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	/* === Scrollbars === */
+
+	::-webkit-scrollbar {
+		@apply w-2;
+		@apply h-2;
+	}
+
+	::-webkit-scrollbar-track {
+		@apply !bg-muted;
+	}
+	::-webkit-scrollbar-thumb {
+		@apply rounded-sm !bg-muted-foreground/30;
+	}
 }
