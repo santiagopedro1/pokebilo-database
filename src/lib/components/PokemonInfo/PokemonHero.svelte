@@ -47,9 +47,7 @@
 				bind:pressed={shiny}
 				class="group py-6"
 			>
-				<Sparkles
-					class="size-11 text-white group-hover:fill-yellow-500 group-hover:text-yellow-500 {shiny && 'fill-yellow-500 text-yellow-500'}"
-				/>
+				<Sparkles class="size-11 group-hover:fill-yellow-500 group-hover:text-yellow-500 {shiny && 'fill-yellow-500 text-yellow-500'}" />
 			</Toggle>
 		{/if}
 	</div>

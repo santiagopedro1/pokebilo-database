@@ -20,6 +20,10 @@
 	let currentForm = pokemon[0];
 </script>
 
+<svelte:head>
+	<title>{pokemon[0].displayName.charAt(0).toUpperCase() + pokemon[0].displayName.slice(1)} - Pokébilo Hub</title>
+</svelte:head>
+
 {#if pokemon.length > 1}
 	<div class="flex items-center justify-center gap-4">
 		<Label class="text-2xl font-bold">Varieties</Label>

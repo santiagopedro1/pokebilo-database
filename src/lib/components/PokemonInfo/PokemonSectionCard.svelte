@@ -28,14 +28,14 @@
 	};
 </script>
 
-<Card.Root class="space-y-8 border-none text-white {size === 'lg' ? 'col-span-2' : ''}">
+<Card.Root class="space-y-8 border-none {size === 'lg' ? 'col-span-2' : ''}">
 	<Card.Header
 		class="rounded-t-lg bg-gradient-to-r {headerBg.length > 1
 			? `${typeGradient[headerBg[0]][0]} ${typeGradient[headerBg[1]][1]}`
 			: `${typeGradient[headerBg[0]][0]} ${typeGradient[headerBg[0]][1]}`}"
 	>
 		<Card.Title class="text-3xl font-extrabold">{title}</Card.Title>
-		<Card.Description class="text-white">{description}</Card.Description>
+		<Card.Description>{description}</Card.Description>
 	</Card.Header>
 	<Card.Content class="grid items-center rounded-b-lg">
 		<slot></slot>

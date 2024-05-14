@@ -63,6 +63,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Pokébilo Hub</title>
+</svelte:head>
+
 {#if isLoading}
 	<img
 		src="/loading-unscreen.gif"
