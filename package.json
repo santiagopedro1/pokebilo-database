@@ -20,6 +20,7 @@
 		"@typescript-eslint/eslint-plugin": "^7.9.0",
 		"@typescript-eslint/parser": "^7.9.0",
 		"autoprefixer": "^10.4.19",
+		"dotenv": "^16.4.5",
 		"drizzle-kit": "^0.21.1",
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
@@ -41,7 +42,7 @@
 	"type": "module",
 	"packageManager": "pnpm@9.1.1",
 	"dependencies": {
-		"better-sqlite3": "^9.6.0",
+		"@libsql/client": "^0.6.0",
 		"bits-ui": "^0.21.7",
 		"clsx": "^2.1.1",
 		"drizzle-orm": "^0.30.10",

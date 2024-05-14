@@ -3,6 +3,7 @@
 	import PokemonCard from '$lib/components/PokemonCard.svelte';
 	import PokemonSearch from '$lib/components/PokemonSearch.svelte';
 	import PokemonSort from '$lib/components/PokemonSort.svelte';
+
 	import { onMount } from 'svelte';
 
 	import type { PageServerData } from './$types';
@@ -10,6 +11,8 @@
 	export let data: PageServerData;
 
 	const { pokemonTypeList } = data;
+
+	let isLoading = true;
 
 	let pokemonSpeciesList: Array<PokemonSpeciesData> = [];
 	let pokemonList = pokemonSpeciesList;
@@ -19,6 +22,7 @@
 	let sortOrder = 'numAsc'; // State variable to store the selected sort order
 
 	function updatePokemonList() {
+		isLoading = true;
 		pokemonList = pokemonSpeciesList.filter((pokemon) => {
 			const matchesSearch =
 				searchQuery === '' ||
@@ -35,35 +39,35 @@
 		switch (sortOrder) {
 			case 'numAsc':
 				pokemonSpeciesList = pokemonSpeciesList.sort((a, b) => a.pokedexNumber - b.pokedexNumber);
-				return;
+				break;
 			case 'numDesc':
 				pokemonSpeciesList = pokemonSpeciesList.sort((a, b) => b.pokedexNumber - a.pokedexNumber);
-				return;
+				break;
 			case 'nameAsc':
 				pokemonSpeciesList = pokemonSpeciesList.sort((a, b) => a.name.localeCompare(b.name));
-				return;
+				break;
 			case 'nameDesc':
 				pokemonSpeciesList = pokemonSpeciesList.sort((a, b) => b.name.localeCompare(a.name));
-				return;
+				break;
 		}
+
+		isLoading = false;
 	}
-	let isLoading = true;
 
 	onMount(async () => {
 		const res = await fetch('/getPokemonList');
 		const data = await res.json();
 		pokemonSpeciesList = data;
 
-		console.log(pokemonSpeciesList);
-
-		isLoading = false;
-
 		updatePokemonList();
 	});
 </script>
 
 {#if isLoading}
-	<p>I'm loading here</p>
+	<img
+		src="/loading-unscreen.gif"
+		alt=""
+	/>
 {:else}
 	<div class="flex w-full justify-between">
 		<PokemonSearch

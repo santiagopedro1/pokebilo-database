@@ -37,6 +37,7 @@
 				src={pokemon.defaultImage}
 				alt="Imagem foda"
 				class="w-72 object-cover transition-transform group-hover:scale-[1.2]"
+				loading="lazy"
 			/>
 		</Card.Header>
 		<div class="flex w-full items-center justify-center gap-4">
