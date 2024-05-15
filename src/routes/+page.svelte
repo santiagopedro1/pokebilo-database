@@ -11,11 +11,13 @@
 	const { pokemonTypeList } = data;
 
 	let pokemonList: Array<PokemonSpeciesData>;
+	let allPokemonSpeciesList: Array<PokemonSpeciesData>;
 
 	$: ({ pokemonSpeciesListPromise } = data);
 	$: pokemonSpeciesListPromise.then((value) => {
+		allPokemonSpeciesList = value;
 		pokemonList = value;
-		updatePokemonList(value);
+		updatePokemonList();
 	});
 
 	let searchQuery = '';
@@ -23,7 +25,7 @@
 	let radioValue = 'and';
 	let sortOrder = 'numAsc';
 
-	function updatePokemonList(allPokemonSpeciesList: Array<PokemonSpeciesData>) {
+	function updatePokemonList() {
 		pokemonList = allPokemonSpeciesList.filter((pokemon) => {
 			const matchesSearch =
 				searchQuery === '' ||
@@ -39,17 +41,17 @@
 		});
 		switch (sortOrder) {
 			case 'numAsc':
-				pokemonList = pokemonList.sort((a, b) => a.pokedexNumber - b.pokedexNumber);
-				break;
+				allPokemonSpeciesList = allPokemonSpeciesList.sort((a, b) => a.pokedexNumber - b.pokedexNumber);
+				return;
 			case 'numDesc':
-				pokemonList = pokemonList.sort((a, b) => b.pokedexNumber - a.pokedexNumber);
-				break;
+				allPokemonSpeciesList = allPokemonSpeciesList.sort((a, b) => b.pokedexNumber - a.pokedexNumber);
+				return;
 			case 'nameAsc':
-				pokemonList = pokemonList.sort((a, b) => a.name.localeCompare(b.name));
-				break;
+				allPokemonSpeciesList = allPokemonSpeciesList.sort((a, b) => a.name.localeCompare(b.name));
+				return;
 			case 'nameDesc':
-				pokemonList = pokemonList.sort((a, b) => b.name.localeCompare(a.name));
-				break;
+				allPokemonSpeciesList = allPokemonSpeciesList.sort((a, b) => b.name.localeCompare(a.name));
+				return;
 		}
 	}
 </script>
@@ -57,27 +59,28 @@
 <svelte:head>
 	<title>Pokébilo Hub</title>
 </svelte:head>
+
 {#await pokemonSpeciesListPromise}
 	<img
-		src="/loading-unscreen.gif"
+		src="/loading.gif"
 		alt=""
 	/>
-{:then allPokemonSpeciesList}
+{:then}
 	<div class="flex w-full justify-between">
 		<PokemonSearch
 			bind:searchQuery
-			on:search={() => updatePokemonList(allPokemonSpeciesList)}
+			on:search={updatePokemonList}
 		/>
 		<PokemonSort
 			bind:sortOrder
-			on:sort={() => updatePokemonList(allPokemonSpeciesList)}
+			on:sort={updatePokemonList}
 		/>
 	</div>
 
 	<AdvancedFilter
 		bind:radioValue
 		bind:selectedTypes
-		on:filter={() => updatePokemonList(allPokemonSpeciesList)}
+		on:filter={updatePokemonList}
 		{pokemonTypeList}
 	/>
 
@@ -90,10 +93,10 @@
 			{/each}
 		</div>
 	{:else}
-		<p class="text-3xl">No Pokémon found!</p>
+		<p class="text-3xl">No Pokémon found</p>
 		<img
-			src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXkzOGIycmVrZ3Ewcm5yMjYwcmcxbmczYXNldzU0cTVyN3RxbHBheCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/12Bpme5pTzGmg8/giphy.gif"
-			alt="Sad pikachu gif"
+			src="/sad-pikachu.webp"
+			alt="Sad pikachu"
 		/>
 	{/if}
 {/await}

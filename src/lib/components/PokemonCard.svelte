@@ -28,7 +28,7 @@
 
 <a href={pokemon.name}>
 	<Card.Root
-		class="group grid place-items-center border-2 text-center ring-white ring-offset-4 ring-offset-card transition-all duration-300 hover:ring-1 {pokemon.type2
+		class="group grid place-items-center border-2 text-center ring-white ring-offset-4 ring-offset-card hover:ring-1 {pokemon.type2
 			? `${typeBorders[pokemon.type1.name][0]} ${typeBorders[pokemon.type2.name][1]}`
 			: `${typeBorders[pokemon.type1.name][0]} ${typeBorders[pokemon.type1.name][1]}`}"
 	>
@@ -36,7 +36,7 @@
 			<img
 				src={pokemon.defaultImage}
 				alt="Imagem foda"
-				class="w-60 object-cover transition-transform group-hover:scale-[1.2]"
+				class="w-60 object-cover transition-transform duration-300 group-hover:scale-[1.2]"
 				loading="lazy"
 			/>
 		</Card.Header>
