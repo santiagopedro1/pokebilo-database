@@ -14,6 +14,6 @@
 	</header>
 	<hr class="w-full" />
 </div>
-<main class="grid gap-8 p-4">
+<main class="grid min-h-screen place-items-center gap-8 p-4">
 	<slot></slot>
 </main>

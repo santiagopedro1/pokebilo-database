@@ -8,7 +8,7 @@ export const getPokemonSpeciesList = async () => {
 	const pt1 = alias(pokemonType, 'pt1');
 	const pt2 = alias(pokemonType, 'pt2');
 
-	const pokemonList = await db
+	const pokemonList: Array<PokemonSpeciesData> = (await db
 		.select({
 			pokedexNumber: pokemonSpecies.pokedexNumber,
 			name: pokemonSpecies.name,
@@ -28,7 +28,7 @@ export const getPokemonSpeciesList = async () => {
 		.leftJoin(pokemon, eq(pokemon.speciesId, pokemonSpecies.pokedexNumber))
 		.leftJoin(pt1, eq(pokemon.type1, pt1.id))
 		.leftJoin(pt2, eq(pokemon.type2, pt2.id))
-		.where(eq(pokemon.isDefault, true));
+		.where(eq(pokemon.isDefault, true))) as Array<PokemonSpeciesData>;
 
 	return pokemonList;
 };
