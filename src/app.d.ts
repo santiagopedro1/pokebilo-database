@@ -17,7 +17,7 @@ declare global {
 	type PokemonType = InferSelectModel<typeof pokemonType>;
 
 	type PokemonSpeciesData = Omit<PokemonSpecies, 'category'> & {
-		defaultImage: string;
+		defaultImageUrl: string;
 		type1: BasicPokemonTypeData;
 		type2: BasicPokemonTypeData | null;
 	};

@@ -28,19 +28,19 @@
 
 <a href={pokemon.name}>
 	<Card.Root
-		class="group grid place-items-center border-2 text-center ring-white ring-offset-4 ring-offset-card hover:ring-1 {pokemon.type2
+		class="group grid place-items-center border-2 px-4 text-center ring-white ring-offset-4 ring-offset-card hover:ring-1 {pokemon.type2
 			? `${typeBorders[pokemon.type1.name][0]} ${typeBorders[pokemon.type2.name][1]}`
 			: `${typeBorders[pokemon.type1.name][0]} ${typeBorders[pokemon.type1.name][1]}`}"
 	>
 		<Card.Header>
 			<img
-				src={pokemon.defaultImage}
+				src={pokemon.defaultImageUrl}
 				alt="Imagem foda"
 				class="w-60 object-cover transition-transform duration-300 group-hover:scale-[1.2]"
 				loading="lazy"
 			/>
 		</Card.Header>
-		<div class="flex w-full items-center justify-center gap-4">
+		<div class="mb-4 flex w-full items-center justify-center gap-4">
 			<TypeBadge type={pokemon.type1} />
 			{#if pokemon.type2}
 				<TypeBadge type={pokemon.type2} />

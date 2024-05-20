@@ -43,7 +43,7 @@
 	<ToggleGroup.Root
 		type="multiple"
 		bind:value={selectedTypes}
-		class="flex flex-wrap gap-2"
+		class="flex flex-wrap gap-4"
 		size="sm"
 		onValueChange={(v) => {
 			if (v) selectedTypes = v;
@@ -51,7 +51,10 @@
 		}}
 	>
 		{#each pokemonTypeList as type}
-			<ToggleGroup.Item value={type.name}>
+			<ToggleGroup.Item
+				value={type.name}
+				class="rounded-lg p-0 hover:bg-inherit"
+			>
 				<TypeBadge
 					{type}
 					variant={selectedTypes.includes(type.name) ? 'default' : 'minimal'}

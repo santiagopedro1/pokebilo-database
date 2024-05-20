@@ -3,7 +3,7 @@ import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 export const pokemonType = sqliteTable('pokemonType', {
 	id: integer('id').primaryKey(),
 	name: text('name').notNull(),
-	icon: text('icon').notNull(),
+	iconUrl: text('iconUrl').notNull(),
 	damageRelations: text('damageRelations', { mode: 'json' })
 		.$type<{
 			offensive: {
@@ -34,7 +34,8 @@ export const pokemon = sqliteTable('pokemon', {
 	displayName: text('displayName').notNull(),
 	formName: text('formName').notNull(),
 	isDefault: integer('isDefault', { mode: 'boolean' }).notNull(),
-	isMega: integer('isMega', { mode: 'boolean' }).notNull(),
+	height: integer('height').notNull(),
+	weight: integer('weight').notNull(),
 	type1: integer('type1')
 		.references(() => pokemonType.id)
 		.notNull(),
@@ -48,6 +49,6 @@ export const pokemon = sqliteTable('pokemon', {
 			}>
 		>()
 		.notNull(),
-	defaultImage: text('defaultImage').notNull(),
-	shinyImage: text('shinyImage').notNull()
+	defaultImageUrl: text('defaultImageUrl').notNull(),
+	shinyImageUrl: text('shinyImageUrl').notNull()
 });

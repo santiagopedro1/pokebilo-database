@@ -8,60 +8,64 @@
 
 	export let data: PageServerData;
 
-	const { species, pokemon, typeList } = data;
+	const { completeSpeciesData, typeList } = data;
+	const { speciesData, pokemonData } = completeSpeciesData;
 
-	const forms = pokemon.map((p) => {
+	const forms = completeSpeciesData.pokemonData.map((p) => {
 		return {
 			value: p.formName,
 			label: p.displayName
 		};
 	});
 
-	let currentForm = pokemon[0];
+	let currentForm = pokemonData[0];
+	const defaultForm = pokemonData[0];
 </script>
 
 <svelte:head>
-	<title>{pokemon[0].displayName.charAt(0).toUpperCase() + pokemon[0].displayName.slice(1)} - Pokébilo Hub</title>
+	<title>{defaultForm.displayName} - Pokébilo Hub</title>
 </svelte:head>
 
-{#if pokemon.length > 1}
-	<div class="flex items-center justify-center gap-4">
-		<Label class="text-2xl font-bold">Varieties</Label>
-		<Select.Root
-			items={forms}
-			selected={forms[0]}
-			onSelectedChange={(v) => {
-				if (v) {
-					const form = pokemon.find((p) => p.formName === v.value);
-					if (form) currentForm = form;
-				}
-			}}
-		>
-			<Select.Trigger class="w-96 text-lg capitalize">
-				<Select.Value placeholder="Theme" />
-			</Select.Trigger>
-			<Select.Content>
-				{#each forms as form}
-					<Select.Item
-						value={form.value}
-						class="text-lg capitalize"
-					>
-						{form.label}
-					</Select.Item>
-				{/each}
-			</Select.Content>
-		</Select.Root>
+<section class="grid place-items-center">
+	<div class="flex items-center gap-5">
+		<p class="text-7xl italic text-foreground/20">#{speciesData.pokedexNumber.toString().padStart(4, '0')}</p>
+		<h1 class="text-8xl font-bold capitalize">{defaultForm.displayName}</h1>
 	</div>
-{/if}
+	<p class="text-2xl capitalize">The {speciesData.category}</p>
+</section>
 
-<Hero
-	pokedexNumber={species.pokedexNumber}
-	name={currentForm.displayName}
-	type1={{ name: currentForm.type1.name, icon: currentForm.type1.icon }}
-	type2={currentForm.type2 ? { name: currentForm.type2.name, icon: currentForm.type2.icon } : null}
-	images={{ default: currentForm.defaultImage, shiny: currentForm.shinyImage }}
-	category={species.category}
-/>
+<div>
+	{#if pokemonData.length > 1}
+		<div class="flex items-center justify-center gap-4">
+			<Select.Root
+				items={forms}
+				selected={forms[0]}
+				onSelectedChange={(v) => {
+					if (v) {
+						const form = pokemonData.find((p) => p.formName === v.value);
+						if (form) currentForm = form;
+					}
+				}}
+			>
+				<Select.Trigger class="w-96 text-lg capitalize">
+					<Select.Value placeholder="Theme" />
+				</Select.Trigger>
+				<Select.Content>
+					{#each forms as form}
+						<Select.Item
+							value={form.value}
+							class="text-lg capitalize"
+						>
+							{form.label}
+						</Select.Item>
+					{/each}
+				</Select.Content>
+			</Select.Root>
+		</div>
+	{/if}
+
+	<Hero bind:currentForm />
+</div>
 
 <div class="grid grid-cols-2 gap-4">
 	<SectionCard

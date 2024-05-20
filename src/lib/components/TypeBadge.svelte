@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let type: { name: string; icon: string } | undefined = undefined;
+	export let type: { name: string; iconUrl: string } | undefined = undefined;
 	export let variant: 'minimal' | 'default' | 'lg' = 'default';
 
 	const typeBgColor: { [key: string]: string } = {
@@ -26,34 +26,34 @@
 
 {#if variant === 'minimal'}
 	{#if !type}
-		<div class="flex h-8 w-[112px] items-center justify-center rounded-lg bg-secondary">
-			<div class="text-sm font-bold uppercase">none</div>
+		<div class="flex h-9 w-[calc(36px+10ch)] items-center justify-center rounded-lg bg-secondary">
+			<div class="font-bold uppercase">none</div>
 		</div>
 	{:else}
-		<div class="grid grid-cols-[32px_80px] place-items-center rounded-lg bg-secondary uppercase">
+		<div class="grid grid-cols-[36px_10ch] place-items-center rounded-lg bg-secondary uppercase">
 			<div class="rounded-s-lg {typeBgColor[type.name]}">
 				<img
-					src={type.icon}
+					src={type.iconUrl}
 					alt=""
 					class="w-full p-1"
 				/>
 			</div>
-			<div class="rounded-e-lg text-center text-sm font-bold">{type.name}</div>
+			<div class="rounded-e-lg text-center font-bold">{type.name}</div>
 		</div>
 	{/if}
 {:else if type}
 	<div
 		class="grid place-items-center rounded-lg uppercase {typeBgColor[type.name]} {variant === 'lg'
-			? 'grid-cols-[32px_96px] text-lg'
-			: 'grid-cols-[32px_80px] text-sm'}"
+			? 'grid-cols-[44px_12ch] text-xl'
+			: 'grid-cols-[36px_10ch]'}"
 	>
-		<div class="rounded-s-lg">
+		<div>
 			<img
-				src={type.icon}
+				src={type.iconUrl}
 				alt=""
 				class="w-full p-1"
 			/>
 		</div>
-		<div class="rounded-e-lg px-2 py-1 text-center font-bold">{type.name}</div>
+		<div class="text-center font-bold">{type.name}</div>
 	</div>
 {/if}
